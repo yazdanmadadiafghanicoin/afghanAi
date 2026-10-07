@@ -1,0 +1,9 @@
+{
+  "name": "yazdan-ai",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Yazdan AI - Personal AI Assistant",
+  "scripts": {
+    "start": "node api/chat.js"
+  }
+}
