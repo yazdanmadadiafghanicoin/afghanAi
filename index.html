@@ -1,469 +1,800 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>AfghanAI</title>
-
-  <style>
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    html,
-    body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
-    }
-
-    body {
-      font-family:
-        Tahoma,
-        Arial,
-        "Noto Sans",
-        sans-serif;
-
-      background: #0b0f14;
-      color: #ffffff;
-      overflow: hidden;
-    }
-
-    .app {
-      width: 100%;
-      height: 100vh;
-      max-width: 950px;
-      margin: auto;
-      display: flex;
-      flex-direction: column;
-      background: #0b0f14;
-    }
 
-    /* HEADER */
-
-    header {
-      height: 68px;
-      flex-shrink: 0;
-
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      padding: 0 14px;
-
-      background: #11161d;
-      border-bottom: 1px solid #202731;
-    }
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+<meta name="theme-color" content="#0b1118">
+
+<title>AfghanAI</title>
+
+<style>
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  background: #0b1118;
+  color: #ffffff;
+  font-family:
+    Arial,
+    "Noto Sans",
+    sans-serif;
+  overflow: hidden;
+}
+
+/* =========================
+   APP
+========================= */
+
+.app {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background:
+    radial-gradient(
+      circle at top,
+      #172432 0%,
+      #0b1118 45%
+    );
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.header {
+  height: 64px;
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 14px;
+
+  background: rgba(10,17,24,.92);
+
+  border-bottom:
+    1px solid rgba(255,255,255,.07);
+
+  backdrop-filter: blur(15px);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo {
+  width: 40px;
+  height: 40px;
+
+  border-radius: 13px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background:
+    linear-gradient(
+      135deg,
+      #10b981,
+      #087f5b
+    );
+
+  font-size: 22px;
+
+  box-shadow:
+    0 5px 20px
+    rgba(16,185,129,.25);
+}
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      min-width: 0;
-    }
+.brandText {
+  display: flex;
+  flex-direction: column;
+}
 
-    .logo {
-      width: 43px;
-      height: 43px;
-      flex-shrink: 0;
+.brandName {
+  font-size: 16px;
+  font-weight: 800;
+}
 
-      border-radius: 14px;
+.status {
+  color: #61d6a8;
+  font-size: 11px;
+  margin-top: 2px;
+}
 
-      display: flex;
-      align-items: center;
-      justify-content: center;
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
 
-      background: #2563eb;
+.iconButton {
+  width: 40px;
+  height: 40px;
 
-      font-size: 20px;
-      font-weight: bold;
-    }
+  border: 0;
+  border-radius: 12px;
 
-    .brandText {
-      min-width: 0;
-    }
+  background: #18222d;
+  color: white;
 
-    .brandText strong {
-      display: block;
-      font-size: 16px;
-    }
+  font-size: 17px;
 
-    .brandText span {
-      display: block;
-      margin-top: 3px;
+  cursor: pointer;
+}
 
-      color: #8b97a8;
-      font-size: 11px;
-    }
+.iconButton:active {
+  transform: scale(.94);
+}
 
-    .headerButtons {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-    }
+/* =========================
+   CHAT
+========================= */
 
-    .iconButton {
-      border: 0;
-      outline: none;
+.chat {
+  flex: 1;
+  overflow-y: auto;
 
-      background: #1b222c;
-      color: white;
+  padding:
+    18px
+    12px
+    125px;
 
-      min-width: 40px;
-      height: 38px;
+  scroll-behavior: smooth;
+}
 
-      border-radius: 10px;
+.chat::-webkit-scrollbar {
+  width: 4px;
+}
 
-      cursor: pointer;
-    }
+.chat::-webkit-scrollbar-thumb {
+  background: #293542;
+  border-radius: 20px;
+}
 
-    .iconButton:active {
-      transform: scale(.95);
-    }
+/* =========================
+   WELCOME
+========================= */
 
-    /* CHAT */
+.welcome {
+  max-width: 600px;
+  margin: 35px auto 25px;
 
-    #chat {
-      flex: 1;
+  text-align: center;
+}
 
-      overflow-y: auto;
+.welcomeLogo {
+  width: 72px;
+  height: 72px;
 
-      padding: 20px 15px 125px;
+  margin: auto;
 
-      scroll-behavior: smooth;
-    }
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    #chat::-webkit-scrollbar {
-      width: 5px;
-    }
+  border-radius: 24px;
 
-    #chat::-webkit-scrollbar-thumb {
-      background: #29313c;
-      border-radius: 10px;
-    }
+  background:
+    linear-gradient(
+      135deg,
+      #10b981,
+      #065f46
+    );
 
-    .welcome {
-      text-align: center;
-      margin-top: 55px;
-      color: #a8b2c0;
-    }
+  font-size: 38px;
 
-    .welcomeIcon {
-      width: 75px;
-      height: 75px;
+  box-shadow:
+    0 15px 45px
+    rgba(16,185,129,.22);
+}
 
-      margin: auto;
+.welcome h1 {
+  margin: 18px 0 8px;
 
-      border-radius: 23px;
+  font-size: 27px;
+}
 
-      display: flex;
-      align-items: center;
-      justify-content: center;
+.welcome p {
+  margin: 0;
 
-      background: #2563eb;
+  color: #9ba8b5;
 
-      font-size: 34px;
+  font-size: 14px;
 
-      box-shadow:
-        0 10px 35px rgba(37, 99, 235, .22);
-    }
+  line-height: 1.8;
+}
 
-    .welcome h2 {
-      margin: 16px 0 7px;
-      color: white;
-      font-size: 21px;
-    }
+/* =========================
+   SUGGESTIONS
+========================= */
 
-    .welcome p {
-      margin: 0 auto;
-      max-width: 500px;
+.suggestions {
+  max-width: 650px;
 
-      line-height: 1.9;
-      font-size: 13px;
-    }
+  margin:
+    15px auto 0;
 
-    .suggestions {
-      margin: 25px auto 0;
+  display: grid;
 
-      display: grid;
-      grid-template-columns:
-        repeat(2, minmax(0, 1fr));
+  grid-template-columns:
+    repeat(2, 1fr);
 
-      gap: 9px;
+  gap: 9px;
+}
 
-      max-width: 500px;
-    }
+.suggestion {
+  min-height: 50px;
 
-    .suggestion {
-      border: 1px solid #29313c;
+  padding: 10px;
 
-      background: #151b23;
-      color: #dce3ec;
+  border:
+    1px solid
+    rgba(255,255,255,.07);
 
-      padding: 12px 10px;
+  border-radius: 14px;
 
-      border-radius: 13px;
+  background: #131c25;
 
-      cursor: pointer;
+  color: #dbe5ed;
 
-      font-size: 12px;
-    }
+  cursor: pointer;
 
-    .suggestion:hover {
-      background: #1b2430;
-    }
+  text-align: center;
 
-    /* MESSAGES */
+  font-size: 12px;
 
-    .message {
-      display: flex;
-      margin: 13px 0;
-    }
+  transition: .2s;
+}
 
-    .message.user {
-      justify-content: flex-start;
-    }
+.suggestion:hover {
+  background: #1b2835;
+}
 
-    .message.assistant {
-      justify-content: flex-end;
-    }
+.suggestion:active {
+  transform: scale(.97);
+}
 
-    .bubble {
-      max-width: 88%;
+/* =========================
+   MESSAGE
+========================= */
 
-      padding: 12px 15px;
+.message {
+  display: flex;
 
-      border-radius: 18px;
+  margin:
+    10px auto;
 
-      font-size: 14px;
-      line-height: 1.9;
+  max-width: 760px;
 
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
+  animation:
+    messageIn .25s ease;
+}
 
-    .user .bubble {
-      background: #2563eb;
+@keyframes messageIn {
 
-      border-bottom-right-radius: 5px;
-    }
+  from {
+    opacity: 0;
+    transform:
+      translateY(8px);
+  }
 
-    .assistant .bubble {
-      background: #1b222c;
+  to {
+    opacity: 1;
+    transform:
+      translateY(0);
+  }
 
-      border: 1px solid #29313c;
+}
 
-      border-bottom-left-radius: 5px;
-    }
+.message.user {
+  justify-content: flex-start;
+}
 
-    /* TYPING */
+.message.assistant {
+  justify-content: flex-end;
+}
 
-    .typing {
-      display: none;
+.bubble {
+  max-width: 88%;
 
-      padding:
-        4px 15px 9px;
+  padding:
+    12px
+    14px;
 
-      color: #8c98a8;
+  border-radius: 17px;
 
-      font-size: 12px;
-    }
+  line-height: 1.75;
 
-    .typing.active {
-      display: block;
-    }
+  font-size: 14px;
 
-    /* BOTTOM */
+  white-space: pre-wrap;
 
-    .bottom {
-      position: fixed;
+  word-break: break-word;
+}
 
-      bottom: 0;
-      left: 50%;
+.user .bubble {
+  background:
+    linear-gradient(
+      135deg,
+      #087f5b,
+      #0b6b4d
+    );
 
-      transform: translateX(-50%);
+  border-bottom-right-radius: 5px;
+}
 
-      width: min(950px, 100%);
+.assistant .bubble {
+  background: #151f29;
 
-      padding:
-        10px 12px 15px;
+  border:
+    1px solid
+    rgba(255,255,255,.06);
 
-      background:
-        linear-gradient(
-          transparent,
-          #0b0f14 24%
-        );
-    }
+  border-bottom-left-radius: 5px;
+}
 
-    .inputBox {
-      display: flex;
-      align-items: flex-end;
-      gap: 8px;
+/* =========================
+   MESSAGE ACTIONS
+========================= */
 
-      background: #151b23;
+.messageActions {
+  display: flex;
 
-      border: 1px solid #2a333f;
+  gap: 5px;
 
-      border-radius: 17px;
+  margin-top: 7px;
+}
 
-      padding: 7px;
-    }
+.messageActions button {
+  width: 31px;
+  height: 31px;
 
-    textarea {
-      flex: 1;
+  border: 0;
 
-      resize: none;
+  border-radius: 9px;
 
-      border: 0;
-      outline: none;
+  background: #202c38;
 
-      background: transparent;
-      color: white;
+  color: #c8d3dd;
 
-      font-family: inherit;
-      font-size: 14px;
+  cursor: pointer;
+}
 
-      padding:
-        9px 10px;
+.messageActions button:active {
+  transform: scale(.92);
+}
 
-      min-height: 43px;
-      max-height: 120px;
-    }
+/* =========================
+   TYPING
+========================= */
 
-    textarea::placeholder {
-      color: #788493;
-    }
+.typing {
+  display: none;
 
-    .sendButton {
-      width: 45px;
-      height: 45px;
+  max-width: 760px;
 
-      flex-shrink: 0;
+  margin: 8px auto;
 
-      border: 0;
+  color: #8998a6;
 
-      border-radius: 13px;
+  font-size: 12px;
+}
 
-      background: #2563eb;
+.typing.show {
+  display: block;
+}
 
-      color: white;
+.dots span {
+  display: inline-block;
 
-      font-size: 18px;
+  animation:
+    blink 1.4s infinite;
+}
 
-      cursor: pointer;
-    }
+.dots span:nth-child(2) {
+  animation-delay: .2s;
+}
 
-    .sendButton:disabled {
-      opacity: .45;
-    }
+.dots span:nth-child(3) {
+  animation-delay: .4s;
+}
 
-    /* LANGUAGE PANEL */
+@keyframes blink {
 
-    .languagePanel {
-      display: none;
+  0%, 80%, 100% {
+    opacity: .2;
+  }
 
-      position: fixed;
+  40% {
+    opacity: 1;
+  }
 
-      top: 73px;
-      left: 50%;
+}
 
-      transform: translateX(-50%);
+/* =========================
+   INPUT AREA
+========================= */
 
-      width: min(360px, calc(100% - 25px));
+.inputArea {
 
-      background: #151b23;
+  position: fixed;
 
-      border: 1px solid #2b3440;
+  bottom: 0;
+  left: 0;
+  right: 0;
 
-      border-radius: 16px;
+  padding:
+    10px
+    10px
+    calc(10px + env(safe-area-inset-bottom));
 
-      padding: 12px;
+  background:
+    linear-gradient(
+      to top,
+      #0b1118 75%,
+      rgba(11,17,24,0)
+    );
 
-      z-index: 20;
+  z-index: 50;
+}
 
-      box-shadow:
-        0 15px 50px rgba(0,0,0,.45);
-    }
+.inputBox {
 
-    .languagePanel.active {
-      display: block;
-    }
+  max-width: 760px;
 
-    .panelTitle {
-      font-size: 13px;
+  margin: auto;
 
-      color: #aab5c3;
+  min-height: 58px;
 
-      padding: 5px 7px 10px;
-    }
+  display: flex;
 
-    .languageOption {
-      width: 100%;
+  align-items: flex-end;
 
-      border: 0;
+  gap: 7px;
 
-      background: transparent;
+  padding: 7px;
 
-      color: white;
+  background: #151f29;
 
-      text-align: start;
+  border:
+    1px solid
+    rgba(255,255,255,.08);
 
-      padding: 11px;
+  border-radius: 18px;
 
-      border-radius: 10px;
+  box-shadow:
+    0 10px 40px
+    rgba(0,0,0,.35);
+}
 
-      cursor: pointer;
+textarea {
 
-      font-family: inherit;
-    }
+  flex: 1;
 
-    .languageOption:hover {
-      background: #202934;
-    }
+  resize: none;
 
-    .languageOption.selected {
-      background: #2563eb;
-    }
+  min-height: 42px;
+  max-height: 120px;
 
-    /* MOBILE */
+  padding:
+    11px
+    8px;
 
-    @media (max-width: 520px) {
+  border: 0;
 
-      header {
-        height: 62px;
-      }
+  outline: 0;
 
-      .logo {
-        width: 40px;
-        height: 40px;
-      }
+  background: transparent;
 
-      .brandText strong {
-        font-size: 15px;
-      }
+  color: white;
 
-      #chat {
-        padding:
-          15px 10px 120px;
-      }
+  font-size: 14px;
 
-      .bubble {
-        max-width: 92%;
-        font-size: 14px;
-      }
+  line-height: 1.5;
 
-      .suggestions {
-        grid-template-columns: 1fr;
-      }
+  font-family: inherit;
+}
 
-      .welcome {
-        margin-top: 35px;
-      }
-    }
-  </style>
+textarea::placeholder {
+  color: #758391;
+}
+
+.sendButton,
+.voiceButton {
+
+  width: 44px;
+  height: 44px;
+
+  flex-shrink: 0;
+
+  border: 0;
+
+  border-radius: 13px;
+
+  color: white;
+
+  cursor: pointer;
+
+  font-size: 18px;
+}
+
+.sendButton {
+
+  background:
+    linear-gradient(
+      135deg,
+      #10b981,
+      #087f5b
+    );
+}
+
+.voiceButton {
+
+  background: #202c38;
+}
+
+.voiceButton.recording {
+
+  background: #dc2626;
+
+  animation:
+    pulseVoice 1s infinite;
+}
+
+@keyframes pulseVoice {
+
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.08);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+
+}
+
+.sendButton:active,
+.voiceButton:active {
+
+  transform: scale(.93);
+}
+
+/* =========================
+   LANGUAGE PANEL
+========================= */
+
+.languagePanel {
+
+  display: none;
+
+  position: fixed;
+
+  top: 65px;
+  left: 10px;
+  right: 10px;
+
+  max-width: 360px;
+
+  margin-left: auto;
+
+  background: #151f29;
+
+  border:
+    1px solid
+    rgba(255,255,255,.08);
+
+  border-radius: 17px;
+
+  padding: 10px;
+
+  z-index: 100;
+
+  box-shadow:
+    0 15px 50px
+    rgba(0,0,0,.5);
+}
+
+.languagePanel.show {
+  display: block;
+}
+
+.languageTitle {
+
+  padding: 8px;
+
+  color: #8e9ca9;
+
+  font-size: 12px;
+}
+
+.languageGrid {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, 1fr);
+
+  gap: 6px;
+}
+
+.languageItem {
+
+  border: 0;
+
+  background: #1d2935;
+
+  color: #e5edf3;
+
+  border-radius: 11px;
+
+  padding: 10px 7px;
+
+  cursor: pointer;
+
+  font-size: 12px;
+}
+
+.languageItem.active {
+
+  background: #087f5b;
+
+  color: white;
+}
+
+/* =========================
+   CLEAR CONFIRM
+========================= */
+
+.clearOverlay {
+
+  display: none;
+
+  position: fixed;
+
+  inset: 0;
+
+  background:
+    rgba(0,0,0,.65);
+
+  z-index: 200;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 20px;
+}
+
+.clearOverlay.show {
+  display: flex;
+}
+
+.clearBox {
+
+  width: 100%;
+  max-width: 360px;
+
+  background: #151f29;
+
+  border-radius: 20px;
+
+  padding: 22px;
+
+  text-align: center;
+}
+
+.clearBox h3 {
+
+  margin:
+    0 0 10px;
+
+}
+
+.clearBox p {
+
+  color: #9ba8b5;
+
+  font-size: 13px;
+
+  line-height: 1.7;
+}
+
+.clearButtons {
+
+  display: flex;
+
+  gap: 8px;
+
+  margin-top: 18px;
+}
+
+.clearButtons button {
+
+  flex: 1;
+
+  height: 45px;
+
+  border: 0;
+
+  border-radius: 12px;
+
+  cursor: pointer;
+
+  color: white;
+}
+
+.cancelButton {
+  background: #263441;
+}
+
+.confirmButton {
+  background: #dc2626;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 500px) {
+
+  .chat {
+    padding:
+      12px
+      9px
+      125px;
+  }
+
+  .welcome {
+    margin-top: 25px;
+  }
+
+  .welcome h1 {
+    font-size: 24px;
+  }
+
+  .welcomeLogo {
+    width: 65px;
+    height: 65px;
+  }
+
+  .bubble {
+    max-width: 92%;
+    font-size: 14px;
+  }
+
+  .suggestions {
+    gap: 7px;
+  }
+
+}
+
+</style>
+
 </head>
 
 <body>
@@ -472,29 +803,35 @@
 
   <!-- HEADER -->
 
-  <header>
+  <header class="header">
 
     <div class="brand">
 
       <div class="logo">
-        AI
+        🤖
       </div>
 
       <div class="brandText">
 
-        <strong id="appName">
+        <div
+          class="brandName"
+          id="brandName"
+        >
           AfghanAI
-        </strong>
+        </div>
 
-        <span id="appSubtitle">
-          دستیار هوش مصنوعی
-        </span>
+        <div
+          class="status"
+          id="statusText"
+        >
+          آنلاین
+        </div>
 
       </div>
 
     </div>
 
-    <div class="headerButtons">
+    <div class="headerActions">
 
       <button
         class="iconButton"
@@ -506,7 +843,7 @@
 
       <button
         class="iconButton"
-        onclick="clearHistory()"
+        onclick="openClearDialog()"
         title="Clear"
       >
         🗑️
@@ -517,7 +854,7 @@
   </header>
 
 
-  <!-- LANGUAGE PANEL -->
+  <!-- LANGUAGE -->
 
   <div
     class="languagePanel"
@@ -525,145 +862,93 @@
   >
 
     <div
-      class="panelTitle"
+      class="languageTitle"
       id="languageTitle"
     >
       انتخاب زبان
     </div>
 
-    <button
-      class="languageOption"
-      data-language="auto"
-      onclick="selectLanguage('auto')"
-    >
-      🌐 خودکار
-    </button>
-
-    <button
-      class="languageOption"
-      data-language="fa"
-      onclick="selectLanguage('fa')"
-    >
-      🇦🇫 فارسی / دری
-    </button>
-
-    <button
-      class="languageOption"
-      data-language="en"
-      onclick="selectLanguage('en')"
-    >
-      🇬🇧 English
-    </button>
-
-    <button
-      class="languageOption"
-      data-language="fr"
-      onclick="selectLanguage('fr')"
-    >
-      🇫🇷 Français
-    </button>
-
-    <button
-      class="languageOption"
-      data-language="ar"
-      onclick="selectLanguage('ar')"
-    >
-      🇸🇦 العربية
-    </button>
-
-    <button
-      class="languageOption"
-      data-language="de"
-      onclick="selectLanguage('de')"
-    >
-      🇩🇪 Deutsch
-    </button>
-
-    <button
-      class="languageOption"
-      data-language="tr"
-      onclick="selectLanguage('tr')"
-    >
-      🇹🇷 Türkçe
-    </button>
-
-    <button
-      class="languageOption"
-      data-language="ru"
-      onclick="selectLanguage('ru')"
-    >
-      🇷🇺 Русский
-    </button>
-
-    <button
-      class="languageOption"
-      data-language="es"
-      onclick="selectLanguage('es')"
-    >
-      🇪🇸 Español
-    </button>
-
-    <button
-      class="languageOption"
-      data-language="zh"
-      onclick="selectLanguage('zh')"
-    >
-      🇨🇳 中文
-    </button>
-
-    <button
-      class="languageOption"
-      data-language="ja"
-      onclick="selectLanguage('ja')"
-    >
-      🇯🇵 日本語
-    </button>
-
-    <button
-      class="languageOption"
-      data-language="ko"
-      onclick="selectLanguage('ko')"
-    >
-      🇰🇷 한국어
-    </button>
-
-    <button
-      class="languageOption"
-      data-language="hi"
-      onclick="selectLanguage('hi')"
-    >
-      🇮🇳 हिन्दी
-    </button>
+    <div
+      class="languageGrid"
+      id="languageGrid"
+    ></div>
 
   </div>
 
 
   <!-- CHAT -->
 
-  <main id="chat"></main>
-
-
-  <!-- TYPING -->
-
-  <div
-    class="typing"
-    id="typing"
+  <main
+    class="chat"
+    id="chat"
   >
-    <span id="typingText">
-      در حال فکر کردن...
-    </span>
-  </div>
+
+    <section
+      class="welcome"
+      id="welcome"
+    >
+
+      <div class="welcomeLogo">
+        🤖
+      </div>
+
+      <h1 id="welcomeTitle">
+        سلام، من AfghanAI هستم
+      </h1>
+
+      <p id="welcomeText">
+        هر سوالی داری بپرس؛
+        می‌توانم در برنامه‌نویسی،
+        GitHub، پروژه‌ها و موضوعات مختلف کمکت کنم.
+      </p>
+
+      <div
+        class="suggestions"
+        id="suggestions"
+      ></div>
+
+    </section>
+
+
+    <div
+      class="typing"
+      id="typing"
+    >
+
+      <span id="typingText">
+        در حال فکر کردن
+      </span>
+
+      <span class="dots">
+        <span>.</span>
+        <span>.</span>
+        <span>.</span>
+      </span>
+
+    </div>
+
+  </main>
 
 
   <!-- INPUT -->
 
-  <div class="bottom">
+  <div class="inputArea">
 
     <div class="inputBox">
+
+      <button
+        class="voiceButton"
+        id="voiceButton"
+        onclick="startVoice()"
+        title="Microphone"
+      >
+        🎤
+      </button>
 
       <textarea
         id="messageInput"
         rows="1"
+        autocomplete="off"
         placeholder="پیام خود را بنویسید..."
       ></textarea>
 
@@ -671,6 +956,7 @@
         class="sendButton"
         id="sendButton"
         onclick="sendMessage()"
+        title="Send"
       >
         ➤
       </button>
@@ -682,20 +968,66 @@
 </div>
 
 
+<!-- CLEAR DIALOG -->
+
+<div
+  class="clearOverlay"
+  id="clearOverlay"
+>
+
+  <div class="clearBox">
+
+    <h3 id="clearTitle">
+      پاک کردن تاریخچه؟
+    </h3>
+
+    <p id="clearText">
+      تمام گفتگوهای ذخیره‌شده روی این دستگاه حذف می‌شود.
+    </p>
+
+    <div class="clearButtons">
+
+      <button
+        class="cancelButton"
+        onclick="closeClearDialog()"
+        id="cancelButton"
+      >
+        لغو
+      </button>
+
+      <button
+        class="confirmButton"
+        onclick="clearHistory()"
+        id="confirmButton"
+      >
+        پاک کردن
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
 <script>
 
-const STORAGE_KEY =
-  "afghanai_history_v2";
+/* =====================================================
+   CONFIG
+===================================================== */
+
+const API_URL = "/api/chat";
+
+const HISTORY_KEY =
+  "afghanai_history_v3";
 
 const LANGUAGE_KEY =
-  "afghanai_language";
+  "afghanai_language_v3";
 
-let selectedLanguage =
-  localStorage.getItem(LANGUAGE_KEY) || "auto";
 
-let messages =
-  loadHistory();
-
+/* =====================================================
+   DOM
+===================================================== */
 
 const chat =
   document.getElementById("chat");
@@ -706,461 +1038,580 @@ const input =
 const sendButton =
   document.getElementById("sendButton");
 
+const voiceButton =
+  document.getElementById("voiceButton");
+
 const typing =
   document.getElementById("typing");
 
-const typingText =
-  document.getElementById("typingText");
+const welcome =
+  document.getElementById("welcome");
 
 const languagePanel =
   document.getElementById("languagePanel");
 
+const languageGrid =
+  document.getElementById("languageGrid");
+
 
 /* =====================================================
-   TRANSLATIONS
+   LANGUAGES
 ===================================================== */
 
-const UI = {
+const LANGUAGES = {
+
+  auto: {
+    name: "🌐 Auto",
+    native: "Automatic"
+  },
 
   fa: {
-    subtitle: "دستیار هوش مصنوعی",
-    language: "انتخاب زبان",
-    auto: "خودکار",
-    placeholder: "پیام خود را بنویسید...",
-    thinking: "در حال فکر کردن...",
-    welcomeTitle: "سلام، من AfghanAI هستم",
-    welcomeText:
-      "هر سوالی داری بنویس. من می‌توانم به زبان‌های مختلف با تو گفتگو کنم.",
-    clearConfirm:
-      "آیا می‌خواهید تمام تاریخچه گفتگو پاک شود؟",
-    error:
-      "❌ خطا در اتصال به هوش مصنوعی.\n\nلطفاً دوباره تلاش کنید.",
-    suggestions: [
-      "خودت را معرفی کن",
-      "چطور برنامه بسازم؟",
-      "GitHub چیست؟",
-      "به من انگلیسی یاد بده"
-    ]
+    name: "🇦🇫 فارسی",
+    native: "فارسی / دری"
   },
 
   en: {
-    subtitle: "AI Assistant",
-    language: "Select language",
-    auto: "Automatic",
-    placeholder: "Write your message...",
-    thinking: "Thinking...",
-    welcomeTitle: "Hello, I'm AfghanAI",
-    welcomeText:
-      "Ask me anything. I can communicate with you in many languages.",
-    clearConfirm:
-      "Do you want to delete all chat history?",
-    error:
-      "❌ AI connection error.\n\nPlease try again.",
-    suggestions: [
-      "Introduce yourself",
-      "How can I build an app?",
-      "What is GitHub?",
-      "Teach me English"
-    ]
+    name: "🇺🇸 English",
+    native: "English"
   },
 
   fr: {
-    subtitle: "Assistant IA",
-    language: "Choisir la langue",
-    auto: "Automatique",
-    placeholder: "Écrivez votre message...",
-    thinking: "Réflexion...",
-    welcomeTitle: "Bonjour, je suis AfghanAI",
-    welcomeText:
-      "Posez-moi vos questions. Je peux communiquer dans plusieurs langues.",
-    clearConfirm:
-      "Voulez-vous supprimer tout l'historique ?",
-    error:
-      "❌ Erreur de connexion à l'IA.\n\nVeuillez réessayer.",
-    suggestions: [
-      "Présente-toi",
-      "Comment créer une application ?",
-      "Qu'est-ce que GitHub ?",
-      "Apprends-moi l'anglais"
-    ]
+    name: "🇫🇷 Français",
+    native: "Français"
   },
 
   ar: {
-    subtitle: "مساعد الذكاء الاصطناعي",
-    language: "اختر اللغة",
-    auto: "تلقائي",
-    placeholder: "اكتب رسالتك...",
-    thinking: "جاري التفكير...",
-    welcomeTitle: "مرحباً، أنا AfghanAI",
-    welcomeText:
-      "اسألني أي شيء. يمكنني التواصل معك بعدة لغات.",
-    clearConfirm:
-      "هل تريد حذف سجل المحادثة بالكامل؟",
-    error:
-      "❌ حدث خطأ في الاتصال بالذكاء الاصطناعي.\n\nحاول مرة أخرى.",
-    suggestions: [
-      "عرّف بنفسك",
-      "كيف أصنع تطبيقاً؟",
-      "ما هو GitHub؟",
-      "علّمني الإنجليزية"
-    ]
+    name: "🇸🇦 العربية",
+    native: "العربية"
   },
 
   de: {
-    subtitle: "KI-Assistent",
-    language: "Sprache auswählen",
-    auto: "Automatisch",
-    placeholder: "Nachricht schreiben...",
-    thinking: "Denke nach...",
-    welcomeTitle: "Hallo, ich bin AfghanAI",
-    welcomeText:
-      "Stelle mir Fragen. Ich kann mit dir in vielen Sprachen kommunizieren.",
-    clearConfirm:
-      "Möchtest du den gesamten Chatverlauf löschen?",
-    error:
-      "❌ Fehler bei der Verbindung zur KI.\n\nBitte versuche es erneut.",
-    suggestions: [
-      "Stell dich vor",
-      "Wie erstelle ich eine App?",
-      "Was ist GitHub?",
-      "Bring mir Englisch bei"
-    ]
-  },
-
-  es: {
-    subtitle: "Asistente de IA",
-    language: "Seleccionar idioma",
-    auto: "Automático",
-    placeholder: "Escribe tu mensaje...",
-    thinking: "Pensando...",
-    welcomeTitle: "Hola, soy AfghanAI",
-    welcomeText:
-      "Pregúntame lo que quieras. Puedo comunicarme en varios idiomas.",
-    clearConfirm:
-      "¿Quieres borrar todo el historial?",
-    error:
-      "❌ Error de conexión con la IA.\n\nInténtalo de nuevo.",
-    suggestions: [
-      "Preséntate",
-      "¿Cómo creo una aplicación?",
-      "¿Qué es GitHub?",
-      "Enséñame inglés"
-    ]
+    name: "🇩🇪 Deutsch",
+    native: "Deutsch"
   },
 
   tr: {
-    subtitle: "Yapay Zeka Asistanı",
-    language: "Dil seç",
-    auto: "Otomatik",
-    placeholder: "Mesajınızı yazın...",
-    thinking: "Düşünüyor...",
-    welcomeTitle: "Merhaba, ben AfghanAI",
-    welcomeText:
-      "Bana istediğiniz soruyu sorabilirsiniz. Birçok dilde iletişim kurabilirim.",
-    clearConfirm:
-      "Tüm sohbet geçmişini silmek istiyor musunuz?",
-    error:
-      "❌ Yapay zeka bağlantı hatası.\n\nLütfen tekrar deneyin.",
-    suggestions: [
-      "Kendini tanıt",
-      "Nasıl uygulama yapabilirim?",
-      "GitHub nedir?",
-      "Bana İngilizce öğret"
-    ]
+    name: "🇹🇷 Türkçe",
+    native: "Türkçe"
   },
 
   ru: {
-    subtitle: "ИИ-помощник",
-    language: "Выберите язык",
-    auto: "Автоматически",
-    placeholder: "Напишите сообщение...",
-    thinking: "Думаю...",
-    welcomeTitle: "Здравствуйте, я AfghanAI",
-    welcomeText:
-      "Задавайте любые вопросы. Я могу общаться на разных языках.",
-    clearConfirm:
-      "Удалить всю историю чата?",
-    error:
-      "❌ Ошибка подключения к ИИ.\n\nПопробуйте ещё раз.",
-    suggestions: [
-      "Представься",
-      "Как создать приложение?",
-      "Что такое GitHub?",
-      "Научи меня английскому"
-    ]
+    name: "🇷🇺 Русский",
+    native: "Русский"
+  },
+
+  es: {
+    name: "🇪🇸 Español",
+    native: "Español"
   },
 
   zh: {
-    subtitle: "人工智能助手",
-    language: "选择语言",
-    auto: "自动",
-    placeholder: "输入您的消息...",
-    thinking: "正在思考...",
-    welcomeTitle: "你好，我是 AfghanAI",
-    welcomeText:
-      "你可以问我任何问题。我可以使用多种语言与你交流。",
-    clearConfirm:
-      "确定删除所有聊天记录吗？",
-    error:
-      "❌ AI连接错误。\n\n请再试一次。",
-    suggestions: [
-      "介绍一下你自己",
-      "如何制作应用？",
-      "GitHub是什么？",
-      "教我英语"
-    ]
+    name: "🇨🇳 中文",
+    native: "中文"
   },
 
   ja: {
-    subtitle: "AIアシスタント",
-    language: "言語を選択",
-    auto: "自動",
-    placeholder: "メッセージを入力...",
-    thinking: "考えています...",
-    welcomeTitle: "こんにちは、AfghanAIです",
-    welcomeText:
-      "何でも質問してください。多くの言語で会話できます。",
-    clearConfirm:
-      "チャット履歴をすべて削除しますか？",
-    error:
-      "❌ AI接続エラーです。\n\nもう一度お試しください。",
-    suggestions: [
-      "自己紹介して",
-      "アプリを作るには？",
-      "GitHubとは？",
-      "英語を教えて"
-    ]
+    name: "🇯🇵 日本語",
+    native: "日本語"
   },
 
   ko: {
-    subtitle: "AI 어시스턴트",
-    language: "언어 선택",
-    auto: "자동",
-    placeholder: "메시지를 입력하세요...",
-    thinking: "생각하는 중...",
-    welcomeTitle: "안녕하세요, AfghanAI입니다",
-    welcomeText:
-      "무엇이든 질문하세요. 여러 언어로 대화할 수 있습니다.",
-    clearConfirm:
-      "모든 채팅 기록을 삭제하시겠습니까?",
-    error:
-      "❌ AI 연결 오류입니다.\n\n다시 시도해주세요.",
-    suggestions: [
-      "자기소개해줘",
-      "앱을 어떻게 만들까요?",
-      "GitHub가 무엇인가요?",
-      "영어를 가르쳐줘"
-    ]
+    name: "🇰🇷 한국어",
+    native: "한국어"
   },
 
   hi: {
-    subtitle: "AI सहायक",
-    language: "भाषा चुनें",
-    auto: "स्वचालित",
-    placeholder: "अपना संदेश लिखें...",
-    thinking: "सोच रहा हूँ...",
-    welcomeTitle: "नमस्ते, मैं AfghanAI हूँ",
-    welcomeText:
-      "आप मुझसे कोई भी सवाल पूछ सकते हैं। मैं कई भाषाओं में बात कर सकता हूँ।",
-    clearConfirm:
-      "क्या आप पूरी चैट हिस्ट्री हटाना चाहते हैं?",
-    error:
-      "❌ AI कनेक्शन में समस्या हुई।\n\nकृपया फिर कोशिश करें।",
-    suggestions: [
-      "अपना परिचय दो",
-      "ऐप कैसे बनाऊँ?",
-      "GitHub क्या है?",
-      "मुझे अंग्रेज़ी सिखाओ"
-    ]
+    name: "🇮🇳 हिन्दी",
+    native: "हिन्दी"
   }
 
 };
 
 
 /* =====================================================
-   GET UI LANGUAGE
+   TRANSLATIONS
 ===================================================== */
 
-function getUILanguage() {
+const TEXT = {
 
-  if (selectedLanguage !== "auto") {
-    return selectedLanguage;
+  fa: {
+
+    brand: "AfghanAI",
+    status: "آنلاین",
+
+    welcome:
+      "سلام، من AfghanAI هستم",
+
+    welcomeText:
+      "هر سوالی داری بپرس؛ می‌توانم در برنامه‌نویسی، GitHub، پروژه‌ها و موضوعات مختلف کمکت کنم.",
+
+    placeholder:
+      "پیام خود را بنویسید...",
+
+    typing:
+      "در حال فکر کردن",
+
+    language:
+      "انتخاب زبان",
+
+    clear:
+      "پاک کردن تاریخچه؟",
+
+    clearText:
+      "تمام گفتگوهای ذخیره‌شده روی این دستگاه حذف می‌شود.",
+
+    cancel:
+      "لغو",
+
+    confirm:
+      "پاک کردن",
+
+    suggestions: [
+
+      "برایم یک سایت بساز",
+
+      "چطور در GitHub پروژه بسازم؟",
+
+      "یک ایده برای درآمد آنلاین بده",
+
+      "کد من را بررسی کن"
+
+    ]
+
+  },
+
+
+  en: {
+
+    brand: "AfghanAI",
+    status: "Online",
+
+    welcome:
+      "Hello, I'm AfghanAI",
+
+    welcomeText:
+      "Ask me anything. I can help with programming, GitHub, projects and many other topics.",
+
+    placeholder:
+      "Write your message...",
+
+    typing:
+      "Thinking",
+
+    language:
+      "Choose language",
+
+    clear:
+      "Clear history?",
+
+    clearText:
+      "All saved conversations on this device will be deleted.",
+
+    cancel:
+      "Cancel",
+
+    confirm:
+      "Clear",
+
+    suggestions: [
+
+      "Build a website for me",
+
+      "How do I create a GitHub project?",
+
+      "Give me an online income idea",
+
+      "Review my code"
+
+    ]
+
+  },
+
+
+  fr: {
+
+    brand: "AfghanAI",
+    status: "En ligne",
+
+    welcome:
+      "Bonjour, je suis AfghanAI",
+
+    welcomeText:
+      "Posez-moi vos questions. Je peux vous aider avec la programmation, GitHub et vos projets.",
+
+    placeholder:
+      "Écrivez votre message...",
+
+    typing:
+      "Réflexion",
+
+    language:
+      "Choisir la langue",
+
+    clear:
+      "Effacer l'historique ?",
+
+    clearText:
+      "Toutes les conversations enregistrées sur cet appareil seront supprimées.",
+
+    cancel:
+      "Annuler",
+
+    confirm:
+      "Effacer",
+
+    suggestions: [
+
+      "Crée-moi un site web",
+
+      "Comment créer un projet GitHub ?",
+
+      "Donne-moi une idée de revenu en ligne",
+
+      "Vérifie mon code"
+
+    ]
+
+  },
+
+
+  ar: {
+
+    brand: "AfghanAI",
+    status: "متصل",
+
+    welcome:
+      "مرحباً، أنا AfghanAI",
+
+    welcomeText:
+      "اسألني أي شيء. يمكنني مساعدتك في البرمجة وGitHub والمشاريع والعديد من المواضيع.",
+
+    placeholder:
+      "اكتب رسالتك...",
+
+    typing:
+      "جاري التفكير",
+
+    language:
+      "اختر اللغة",
+
+    clear:
+      "مسح السجل؟",
+
+    clearText:
+      "سيتم حذف جميع المحادثات المحفوظة على هذا الجهاز.",
+
+    cancel:
+      "إلغاء",
+
+    confirm:
+      "مسح",
+
+    suggestions: [
+
+      "أنشئ لي موقعاً",
+
+      "كيف أنشئ مشروع GitHub؟",
+
+      "أعطني فكرة دخل عبر الإنترنت",
+
+      "راجع الكود الخاص بي"
+
+    ]
+
+  },
+
+};
+
+
+/* =====================================================
+   FALLBACK TRANSLATIONS
+===================================================== */
+
+function getTranslationLanguage() {
+
+  const current =
+    getUILanguage();
+
+  if (TEXT[current]) {
+    return current;
   }
 
-  const browser =
-    navigator.language || "fa";
+  return "en";
+}
 
-  const code =
-    browser.split("-")[0].toLowerCase();
 
-  if (UI[code]) {
-    return code;
-  }
+function t(key) {
 
-  return "fa";
+  const lang =
+    getTranslationLanguage();
+
+  return TEXT[lang][key]
+    || TEXT.en[key]
+    || key;
 }
 
 
 /* =====================================================
-   UPDATE INTERFACE
+   LANGUAGE
 ===================================================== */
 
-function updateInterface() {
+let selectedLanguage =
+  localStorage.getItem(
+    LANGUAGE_KEY
+  ) || "fa";
+
+
+function getUILanguage() {
+
+  if (selectedLanguage === "auto") {
+
+    const browser =
+      navigator.language
+        .split("-")[0];
+
+    if (LANGUAGES[browser]) {
+      return browser;
+    }
+
+    return "fa";
+  }
+
+  return selectedLanguage;
+}
+
+
+/* =====================================================
+   RENDER LANGUAGES
+===================================================== */
+
+function renderLanguages() {
+
+  languageGrid.innerHTML = "";
+
+  Object.keys(LANGUAGES)
+    .forEach(code => {
+
+      const button =
+        document.createElement("button");
+
+      button.className =
+        "languageItem";
+
+      if (code === selectedLanguage) {
+        button.classList.add("active");
+      }
+
+      button.textContent =
+        LANGUAGES[code].name;
+
+      button.onclick =
+        () => {
+
+          selectedLanguage =
+            code;
+
+          localStorage.setItem(
+            LANGUAGE_KEY,
+            code
+          );
+
+          applyLanguage();
+
+          languagePanel
+            .classList
+            .remove("show");
+
+        };
+
+      languageGrid.appendChild(
+        button
+      );
+
+    });
+
+}
+
+
+/* =====================================================
+   APPLY LANGUAGE
+===================================================== */
+
+function applyLanguage() {
 
   const lang =
     getUILanguage();
-
-  const t =
-    UI[lang];
 
   document.documentElement.lang =
     lang;
 
   document.documentElement.dir =
-    ["fa", "ar"].includes(lang)
+    lang === "ar" ||
+    lang === "fa"
       ? "rtl"
       : "ltr";
 
+
   document.getElementById(
-    "appSubtitle"
+    "brandName"
   ).textContent =
-    t.subtitle;
+    t("brand");
+
+
+  document.getElementById(
+    "statusText"
+  ).textContent =
+    t("status");
+
+
+  document.getElementById(
+    "welcomeTitle"
+  ).textContent =
+    t("welcome");
+
+
+  document.getElementById(
+    "welcomeText"
+  ).textContent =
+    t("welcomeText");
+
 
   document.getElementById(
     "languageTitle"
   ).textContent =
-    t.language;
+    t("language");
+
+
+  document.getElementById(
+    "clearTitle"
+  ).textContent =
+    t("clear");
+
+
+  document.getElementById(
+    "clearText"
+  ).textContent =
+    t("clearText");
+
+
+  document.getElementById(
+    "cancelButton"
+  ).textContent =
+    t("cancel");
+
+
+  document.getElementById(
+    "confirmButton"
+  ).textContent =
+    t("confirm");
+
 
   document.getElementById(
     "typingText"
   ).textContent =
-    t.thinking;
+    t("typing");
+
 
   input.placeholder =
-    t.placeholder;
+    t("placeholder");
 
-  document
-    .querySelectorAll(".languageOption")
-    .forEach(button => {
 
-      button.classList.toggle(
-        "selected",
-        button.dataset.language ===
-        selectedLanguage
-      );
+  renderSuggestions();
 
-    });
-
-  render();
+  renderLanguages();
 
 }
 
 
 /* =====================================================
-   LANGUAGE PANEL
+   SUGGESTIONS
 ===================================================== */
 
-function toggleLanguagePanel() {
+function renderSuggestions() {
 
-  languagePanel.classList.toggle(
-    "active"
-  );
+  const box =
+    document.getElementById(
+      "suggestions"
+    );
+
+  box.innerHTML = "";
+
+  const list =
+    t("suggestions");
+
+  list.forEach(text => {
+
+    const button =
+      document.createElement("button");
+
+    button.className =
+      "suggestion";
+
+    button.textContent =
+      text;
+
+    button.onclick =
+      () => {
+
+        input.value =
+          text;
+
+        autoResize();
+
+        input.focus();
+
+      };
+
+    box.appendChild(button);
+
+  });
 
 }
-
-function selectLanguage(language) {
-
-  selectedLanguage =
-    language;
-
-  localStorage.setItem(
-    LANGUAGE_KEY,
-    language
-  );
-
-  languagePanel.classList.remove(
-    "active"
-  );
-
-  updateInterface();
-
-}
-
-
-/* =====================================================
-   CLOSE PANEL WHEN CLICK OUTSIDE
-===================================================== */
-
-document.addEventListener(
-  "click",
-  function(event) {
-
-    const inside =
-      languagePanel.contains(event.target);
-
-    const languageButton =
-      event.target.closest(
-        ".iconButton"
-      );
-
-    if (
-      !inside &&
-      !languageButton
-    ) {
-
-      languagePanel.classList.remove(
-        "active"
-      );
-
-    }
-
-  }
-);
 
 
 /* =====================================================
    HISTORY
 ===================================================== */
 
-function loadHistory() {
+let messages = [];
 
-  try {
 
-    const saved =
+try {
+
+  messages =
+    JSON.parse(
       localStorage.getItem(
-        STORAGE_KEY
-      );
+        HISTORY_KEY
+      ) || "[]"
+    );
 
-    if (!saved) {
-      return [];
-    }
-
-    const data =
-      JSON.parse(saved);
-
-    return Array.isArray(data)
-      ? data
-      : [];
-
-  } catch (error) {
-
-    return [];
-
+  if (!Array.isArray(messages)) {
+    messages = [];
   }
+
+} catch {
+
+  messages = [];
 
 }
 
+
+/* =====================================================
+   SAVE HISTORY
+===================================================== */
 
 function saveHistory() {
 
   try {
 
     localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify(messages)
+      HISTORY_KEY,
+      JSON.stringify(
+        messages.slice(-100)
+      )
     );
 
-  } catch (error) {
+  } catch(error) {
 
     console.error(
       "History save error:",
@@ -1173,116 +1624,125 @@ function saveHistory() {
 
 
 /* =====================================================
-   ESCAPE
+   ADD MESSAGE
 ===================================================== */
 
-function escapeHTML(text) {
+function addMessage(
+  role,
+  content,
+  save = true
+) {
 
-  return String(text)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;");
+  const message =
+    document.createElement("div");
 
-}
-
-
-/* =====================================================
-   RENDER
-===================================================== */
-
-function render() {
-
-  chat.innerHTML = "";
-
-  const lang =
-    getUILanguage();
-
-  const t =
-    UI[lang];
+  message.className =
+    "message " + role;
 
 
-  if (messages.length === 0) {
-
-    const suggestions =
-      t.suggestions
-        .map(text => {
-
-          return `
-            <button
-              class="suggestion"
-              onclick="useSuggestion(this)"
-            >
-              ${escapeHTML(text)}
-            </button>
-          `;
-
-        })
-        .join("");
+  const wrapper =
+    document.createElement("div");
 
 
-    chat.innerHTML = `
+  const bubble =
+    document.createElement("div");
 
-      <div class="welcome">
+  bubble.className =
+    "bubble";
 
-        <div class="welcomeIcon">
-          🤖
-        </div>
+  bubble.textContent =
+    content;
 
-        <h2>
-          ${escapeHTML(t.welcomeTitle)}
-        </h2>
 
-        <p>
-          ${escapeHTML(t.welcomeText)}
-        </p>
+  wrapper.appendChild(
+    bubble
+  );
 
-        <div class="suggestions">
-          ${suggestions}
-        </div>
 
-      </div>
+  if (role === "assistant") {
 
-    `;
+    const actions =
+      document.createElement(
+        "div"
+      );
 
-    return;
+    actions.className =
+      "messageActions";
+
+
+    const speakButton =
+      document.createElement(
+        "button"
+      );
+
+    speakButton.textContent =
+      "🔊";
+
+    speakButton.title =
+      "Read";
+
+    speakButton.onclick =
+      () => speakText(content);
+
+
+    const stopButton =
+      document.createElement(
+        "button"
+      );
+
+    stopButton.textContent =
+      "⏹️";
+
+    stopButton.title =
+      "Stop";
+
+    stopButton.onclick =
+      () => stopSpeaking();
+
+
+    actions.appendChild(
+      speakButton
+    );
+
+    actions.appendChild(
+      stopButton
+    );
+
+    wrapper.appendChild(
+      actions
+    );
+
   }
 
 
-  messages.forEach(message => {
+  message.appendChild(
+    wrapper
+  );
 
-    const wrapper =
-      document.createElement("div");
 
-    wrapper.className =
-      "message " +
-      (
-        message.role === "user"
+  chat.insertBefore(
+    message,
+    typing
+  );
+
+
+  if (save) {
+
+    messages.push({
+
+      role:
+        role === "user"
           ? "user"
-          : "assistant"
-      );
+          : "assistant",
 
+      content:
+        content
 
-    const bubble =
-      document.createElement("div");
+    });
 
-    bubble.className =
-      "bubble";
+    saveHistory();
 
-    bubble.innerHTML =
-      escapeHTML(
-        message.content
-      );
-
-
-    wrapper.appendChild(
-      bubble
-    );
-
-    chat.appendChild(
-      wrapper
-    );
-
-  });
+  }
 
 
   scrollToBottom();
@@ -1290,30 +1750,32 @@ function render() {
 }
 
 
-function useSuggestion(button) {
-
-  input.value =
-    button.textContent.trim();
-
-  input.focus();
-
-  sendMessage();
-
-}
-
-
 /* =====================================================
-   SCROLL
+   LOAD HISTORY
 ===================================================== */
 
-function scrollToBottom() {
+function loadHistory() {
 
-  setTimeout(() => {
+  if (!messages.length) {
+    return;
+  }
 
-    chat.scrollTop =
-      chat.scrollHeight;
+  welcome.style.display =
+    "none";
 
-  }, 50);
+
+  messages.forEach(message => {
+
+    addMessage(
+      message.role,
+      message.content,
+      false
+    );
+
+  });
+
+
+  scrollToBottom();
 
 }
 
@@ -1333,47 +1795,42 @@ async function sendMessage() {
   }
 
 
-  if (sendButton.disabled) {
-    return;
+  if (isRecording) {
+    stopVoice();
   }
 
 
-  messages.push({
-
-    role: "user",
-
-    content: text
-
-  });
+  welcome.style.display =
+    "none";
 
 
-  saveHistory();
-
-  render();
+  addMessage(
+    "user",
+    text,
+    true
+  );
 
 
   input.value = "";
 
-  input.style.height =
-    "auto";
+  autoResize();
+
+
+  setTyping(true);
 
 
   sendButton.disabled =
     true;
 
-  typing.classList.add(
-    "active"
-  );
-
-
-  scrollToBottom();
+  voiceButton.disabled =
+    true;
 
 
   try {
 
     const response =
       await fetch(
-        "/api/chat",
+        API_URL,
         {
 
           method: "POST",
@@ -1402,105 +1859,129 @@ async function sendMessage() {
       await response.json();
 
 
-    if (
-      !response.ok ||
-      !data.success
-    ) {
+    if (!response.ok ||
+        !data.success) {
 
       throw new Error(
         data.error ||
-        "AI error"
+        "Server error"
       );
 
     }
 
 
-    messages.push({
-
-      role: "assistant",
-
-      content:
-        data.reply
-
-    });
+    addMessage(
+      "assistant",
+      data.reply,
+      true
+    );
 
 
-    saveHistory();
+    speakText(
+      data.reply
+    );
 
-    render();
 
-
-  } catch (error) {
+  } catch(error) {
 
     console.error(error);
 
 
-    const lang =
-      getUILanguage();
-
-    messages.push({
-
-      role: "assistant",
-
-      content:
-        UI[lang].error
-
-    });
-
-
-    saveHistory();
-
-    render();
-
-  } finally {
-
-    sendButton.disabled =
-      false;
-
-    typing.classList.remove(
-      "active"
+    addMessage(
+      "assistant",
+      "❌ " +
+      (
+        error.message ||
+        "خطا در ارتباط با سرور"
+      ),
+      false
     );
 
-    input.focus();
-
   }
+
+
+  setTyping(false);
+
+
+  sendButton.disabled =
+    false;
+
+  voiceButton.disabled =
+    false;
+
+
+  input.focus();
 
 }
 
 
 /* =====================================================
-   CLEAR
+   TYPING
 ===================================================== */
 
-function clearHistory() {
+function setTyping(show) {
 
-  const lang =
-    getUILanguage();
+  if (show) {
 
-  const confirmed =
-    confirm(
-      UI[lang].clearConfirm
+    typing.classList.add(
+      "show"
     );
 
+  } else {
 
-  if (!confirmed) {
-    return;
+    typing.classList.remove(
+      "show"
+    );
+
   }
 
-
-  messages = [];
-
-  localStorage.removeItem(
-    STORAGE_KEY
-  );
-
-  render();
+  scrollToBottom();
 
 }
 
 
 /* =====================================================
-   ENTER TO SEND
+   SCROLL
+===================================================== */
+
+function scrollToBottom() {
+
+  setTimeout(() => {
+
+    chat.scrollTop =
+      chat.scrollHeight;
+
+  }, 50);
+
+}
+
+
+/* =====================================================
+   TEXTAREA
+===================================================== */
+
+function autoResize() {
+
+  input.style.height =
+    "auto";
+
+  input.style.height =
+    Math.min(
+      input.scrollHeight,
+      120
+    ) + "px";
+
+}
+
+
+input.addEventListener(
+  "input",
+  autoResize
+);
+
+
+/* =====================================================
+   ENTER SEND
 ===================================================== */
 
 input.addEventListener(
@@ -1523,33 +2004,453 @@ input.addEventListener(
 
 
 /* =====================================================
-   AUTO RESIZE
+   LANGUAGE PANEL
 ===================================================== */
 
-input.addEventListener(
-  "input",
-  function() {
+function toggleLanguagePanel() {
 
-    this.style.height =
-      "auto";
+  languagePanel
+    .classList
+    .toggle("show");
 
-    this.style.height =
-      Math.min(
-        this.scrollHeight,
-        120
-      ) + "px";
+}
+
+
+document.addEventListener(
+  "click",
+  function(event) {
+
+    if (
+      languagePanel.classList.contains(
+        "show"
+      ) &&
+      !languagePanel.contains(event.target) &&
+      !event.target.closest(".iconButton")
+    ) {
+
+      languagePanel
+        .classList
+        .remove("show");
+
+    }
 
   }
 );
 
 
 /* =====================================================
-   START
+   CLEAR HISTORY
 ===================================================== */
 
-updateInterface();
+function openClearDialog() {
+
+  document
+    .getElementById(
+      "clearOverlay"
+    )
+    .classList
+    .add("show");
+
+}
+
+
+function closeClearDialog() {
+
+  document
+    .getElementById(
+      "clearOverlay"
+    )
+    .classList
+    .remove("show");
+
+}
+
+
+function clearHistory() {
+
+  messages = [];
+
+  localStorage.removeItem(
+    HISTORY_KEY
+  );
+
+
+  document
+    .querySelectorAll(
+      ".message"
+    )
+    .forEach(element => {
+
+      element.remove();
+
+    });
+
+
+  welcome.style.display =
+    "block";
+
+
+  closeClearDialog();
+
+  input.focus();
+
+}
+
+
+/* =====================================================
+   VOICE INPUT
+===================================================== */
+
+let recognition = null;
+
+let isRecording = false;
+
+
+function getVoiceLanguage() {
+
+  const lang =
+    getUILanguage();
+
+
+  const languages = {
+
+    fa: "fa-IR",
+
+    en: "en-US",
+
+    fr: "fr-FR",
+
+    ar: "ar-SA",
+
+    de: "de-DE",
+
+    tr: "tr-TR",
+
+    ru: "ru-RU",
+
+    es: "es-ES",
+
+    zh: "zh-CN",
+
+    ja: "ja-JP",
+
+    ko: "ko-KR",
+
+    hi: "hi-IN"
+
+  };
+
+
+  return languages[lang]
+    || "fa-IR";
+
+}
+
+
+function startVoice() {
+
+  const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+
+  if (!SpeechRecognition) {
+
+    alert(
+      "🎤 تشخیص صدا در این مرورگر پشتیبانی نمی‌شود. لطفاً Chrome را امتحان کنید."
+    );
+
+    return;
+
+  }
+
+
+  if (isRecording) {
+
+    stopVoice();
+
+    return;
+
+  }
+
+
+  recognition =
+    new SpeechRecognition();
+
+
+  recognition.lang =
+    getVoiceLanguage();
+
+
+  recognition.continuous =
+    false;
+
+
+  recognition.interimResults =
+    true;
+
+
+  recognition.onstart =
+    function() {
+
+      isRecording =
+        true;
+
+
+      voiceButton
+        .classList
+        .add("recording");
+
+
+      voiceButton.textContent =
+        "⏹️";
+
+    };
+
+
+  recognition.onresult =
+    function(event) {
+
+      let transcript =
+        "";
+
+
+      for (
+        let i =
+          event.resultIndex;
+
+        i <
+          event.results.length;
+
+        i++
+      ) {
+
+        transcript +=
+          event.results[i][0]
+            .transcript;
+
+      }
+
+
+      input.value =
+        transcript;
+
+
+      autoResize();
+
+    };
+
+
+  recognition.onerror =
+    function(event) {
+
+      console.error(
+        "Speech recognition error:",
+        event.error
+      );
+
+
+      stopVoice();
+
+    };
+
+
+  recognition.onend =
+    function() {
+
+      isRecording =
+        false;
+
+
+      voiceButton
+        .classList
+        .remove(
+          "recording"
+        );
+
+
+      voiceButton.textContent =
+        "🎤";
+
+    };
+
+
+  try {
+
+    recognition.start();
+
+  } catch(error) {
+
+    console.error(error);
+
+  }
+
+}
+
+
+function stopVoice() {
+
+  if (recognition) {
+
+    try {
+
+      recognition.stop();
+
+    } catch(error) {
+
+      console.log(error);
+
+    }
+
+  }
+
+
+  isRecording =
+    false;
+
+
+  voiceButton
+    .classList
+    .remove(
+      "recording"
+    );
+
+
+  voiceButton.textContent =
+    "🎤";
+
+}
+
+
+/* =====================================================
+   AI VOICE OUTPUT
+===================================================== */
+
+function getSpeechLanguage() {
+
+  const lang =
+    getUILanguage();
+
+
+  const languages = {
+
+    fa: "fa-IR",
+
+    en: "en-US",
+
+    fr: "fr-FR",
+
+    ar: "ar-SA",
+
+    de: "de-DE",
+
+    tr: "tr-TR",
+
+    ru: "ru-RU",
+
+    es: "es-ES",
+
+    zh: "zh-CN",
+
+    ja: "ja-JP",
+
+    ko: "ko-KR",
+
+    hi: "hi-IN"
+
+  };
+
+
+  return languages[lang]
+    || "fa-IR";
+
+}
+
+
+function speakText(text) {
+
+  if (
+    !(
+      "speechSynthesis"
+      in window
+    )
+  ) {
+
+    return;
+
+  }
+
+
+  stopSpeaking();
+
+
+  const cleanText =
+    String(text)
+      .replace(
+        /[*#`_]/g,
+        ""
+      )
+      .trim();
+
+
+  if (!cleanText) {
+    return;
+  }
+
+
+  const speech =
+    new SpeechSynthesisUtterance(
+      cleanText
+    );
+
+
+  speech.lang =
+    getSpeechLanguage();
+
+
+  speech.rate =
+    0.95;
+
+
+  speech.pitch =
+    1;
+
+
+  window.speechSynthesis
+    .speak(
+      speech
+    );
+
+}
+
+
+function stopSpeaking() {
+
+  if (
+    "speechSynthesis"
+    in window
+  ) {
+
+    window.speechSynthesis
+      .cancel();
+
+  }
+
+}
+
+
+/* =====================================================
+   INITIALIZE
+===================================================== */
+
+applyLanguage();
+
+loadHistory();
+
+input.focus();
 
 </script>
 
 </body>
+
 </html>
