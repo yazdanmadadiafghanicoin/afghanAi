@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Yazdan AI</title>
+  <title>AfghanAI</title>
 
   <style>
     * {
@@ -12,117 +12,215 @@
       -webkit-tap-highlight-color: transparent;
     }
 
+    html,
     body {
       margin: 0;
-      font-family: Tahoma, Arial, sans-serif;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    body {
+      font-family:
+        Tahoma,
+        Arial,
+        "Noto Sans",
+        sans-serif;
+
       background: #0b0f14;
-      color: #fff;
-      height: 100vh;
+      color: #ffffff;
       overflow: hidden;
     }
 
     .app {
+      width: 100%;
       height: 100vh;
+      max-width: 950px;
+      margin: auto;
       display: flex;
       flex-direction: column;
-      max-width: 900px;
-      margin: auto;
       background: #0b0f14;
     }
 
+    /* HEADER */
+
     header {
-      height: 65px;
+      height: 68px;
+      flex-shrink: 0;
+
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 15px;
-      border-bottom: 1px solid #202731;
+
+      padding: 0 14px;
+
       background: #11161d;
+      border-bottom: 1px solid #202731;
     }
 
     .brand {
       display: flex;
       align-items: center;
       gap: 10px;
+      min-width: 0;
     }
 
     .logo {
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
+      width: 43px;
+      height: 43px;
+      flex-shrink: 0;
+
+      border-radius: 14px;
+
       display: flex;
       align-items: center;
       justify-content: center;
+
       background: #2563eb;
+
       font-size: 20px;
       font-weight: bold;
     }
 
-    .brand-text strong {
+    .brandText {
+      min-width: 0;
+    }
+
+    .brandText strong {
       display: block;
       font-size: 16px;
     }
 
-    .brand-text span {
+    .brandText span {
       display: block;
-      color: #8d98a8;
-      font-size: 11px;
       margin-top: 3px;
+
+      color: #8b97a8;
+      font-size: 11px;
     }
 
-    .clear-btn {
+    .headerButtons {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .iconButton {
       border: 0;
+      outline: none;
+
       background: #1b222c;
-      color: #fff;
-      padding: 9px 12px;
+      color: white;
+
+      min-width: 40px;
+      height: 38px;
+
       border-radius: 10px;
+
       cursor: pointer;
-      font-size: 12px;
     }
 
-    .clear-btn:active {
-      transform: scale(.96);
+    .iconButton:active {
+      transform: scale(.95);
     }
+
+    /* CHAT */
 
     #chat {
       flex: 1;
+
       overflow-y: auto;
-      padding: 20px 15px 120px;
+
+      padding: 20px 15px 125px;
+
       scroll-behavior: smooth;
+    }
+
+    #chat::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    #chat::-webkit-scrollbar-thumb {
+      background: #29313c;
+      border-radius: 10px;
     }
 
     .welcome {
       text-align: center;
-      margin-top: 60px;
-      color: #aab4c2;
+      margin-top: 55px;
+      color: #a8b2c0;
     }
 
-    .welcome-icon {
-      width: 70px;
-      height: 70px;
+    .welcomeIcon {
+      width: 75px;
+      height: 75px;
+
       margin: auto;
-      border-radius: 22px;
-      background: #2563eb;
+
+      border-radius: 23px;
+
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 32px;
-      margin-bottom: 15px;
+
+      background: #2563eb;
+
+      font-size: 34px;
+
+      box-shadow:
+        0 10px 35px rgba(37, 99, 235, .22);
     }
 
     .welcome h2 {
+      margin: 16px 0 7px;
       color: white;
-      margin: 8px 0;
+      font-size: 21px;
     }
 
     .welcome p {
+      margin: 0 auto;
+      max-width: 500px;
+
+      line-height: 1.9;
       font-size: 13px;
-      line-height: 1.8;
     }
+
+    .suggestions {
+      margin: 25px auto 0;
+
+      display: grid;
+      grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+      gap: 9px;
+
+      max-width: 500px;
+    }
+
+    .suggestion {
+      border: 1px solid #29313c;
+
+      background: #151b23;
+      color: #dce3ec;
+
+      padding: 12px 10px;
+
+      border-radius: 13px;
+
+      cursor: pointer;
+
+      font-size: 12px;
+    }
+
+    .suggestion:hover {
+      background: #1b2430;
+    }
+
+    /* MESSAGES */
 
     .message {
       display: flex;
-      margin: 12px 0;
+      margin: 13px 0;
     }
 
     .message.user {
@@ -134,100 +232,235 @@
     }
 
     .bubble {
-      max-width: 85%;
+      max-width: 88%;
+
       padding: 12px 15px;
-      border-radius: 17px;
-      line-height: 1.8;
+
+      border-radius: 18px;
+
       font-size: 14px;
+      line-height: 1.9;
+
       white-space: pre-wrap;
       word-break: break-word;
     }
 
     .user .bubble {
       background: #2563eb;
+
       border-bottom-right-radius: 5px;
     }
 
     .assistant .bubble {
       background: #1b222c;
+
       border: 1px solid #29313c;
+
       border-bottom-left-radius: 5px;
     }
 
+    /* TYPING */
+
     .typing {
       display: none;
-      color: #8d98a8;
+
+      padding:
+        4px 15px 9px;
+
+      color: #8c98a8;
+
       font-size: 12px;
-      padding: 5px 15px 10px;
     }
 
     .typing.active {
       display: block;
     }
 
+    /* BOTTOM */
+
     .bottom {
       position: fixed;
+
       bottom: 0;
       left: 50%;
+
       transform: translateX(-50%);
-      width: min(900px, 100%);
-      padding: 10px 12px 14px;
-      background: linear-gradient(
-        transparent,
-        #0b0f14 20%
-      );
+
+      width: min(950px, 100%);
+
+      padding:
+        10px 12px 15px;
+
+      background:
+        linear-gradient(
+          transparent,
+          #0b0f14 24%
+        );
     }
 
-    .input-box {
+    .inputBox {
       display: flex;
+      align-items: flex-end;
       gap: 8px;
+
       background: #151b23;
+
       border: 1px solid #2a333f;
-      border-radius: 16px;
+
+      border-radius: 17px;
+
       padding: 7px;
     }
 
     textarea {
       flex: 1;
+
       resize: none;
+
       border: 0;
       outline: none;
+
       background: transparent;
       color: white;
+
       font-family: inherit;
       font-size: 14px;
-      padding: 9px;
-      min-height: 42px;
-      max-height: 110px;
+
+      padding:
+        9px 10px;
+
+      min-height: 43px;
+      max-height: 120px;
     }
 
     textarea::placeholder {
       color: #788493;
     }
 
-    .send {
+    .sendButton {
       width: 45px;
       height: 45px;
+
+      flex-shrink: 0;
+
       border: 0;
+
       border-radius: 13px;
+
       background: #2563eb;
+
       color: white;
+
       font-size: 18px;
+
       cursor: pointer;
     }
 
-    .send:disabled {
-      opacity: .5;
+    .sendButton:disabled {
+      opacity: .45;
     }
 
-    @media (max-width: 500px) {
-      .bubble {
-        max-width: 90%;
+    /* LANGUAGE PANEL */
+
+    .languagePanel {
+      display: none;
+
+      position: fixed;
+
+      top: 73px;
+      left: 50%;
+
+      transform: translateX(-50%);
+
+      width: min(360px, calc(100% - 25px));
+
+      background: #151b23;
+
+      border: 1px solid #2b3440;
+
+      border-radius: 16px;
+
+      padding: 12px;
+
+      z-index: 20;
+
+      box-shadow:
+        0 15px 50px rgba(0,0,0,.45);
+    }
+
+    .languagePanel.active {
+      display: block;
+    }
+
+    .panelTitle {
+      font-size: 13px;
+
+      color: #aab5c3;
+
+      padding: 5px 7px 10px;
+    }
+
+    .languageOption {
+      width: 100%;
+
+      border: 0;
+
+      background: transparent;
+
+      color: white;
+
+      text-align: start;
+
+      padding: 11px;
+
+      border-radius: 10px;
+
+      cursor: pointer;
+
+      font-family: inherit;
+    }
+
+    .languageOption:hover {
+      background: #202934;
+    }
+
+    .languageOption.selected {
+      background: #2563eb;
+    }
+
+    /* MOBILE */
+
+    @media (max-width: 520px) {
+
+      header {
+        height: 62px;
+      }
+
+      .logo {
+        width: 40px;
+        height: 40px;
+      }
+
+      .brandText strong {
+        font-size: 15px;
       }
 
       #chat {
-        padding-left: 10px;
-        padding-right: 10px;
+        padding:
+          15px 10px 120px;
+      }
+
+      .bubble {
+        max-width: 92%;
+        font-size: 14px;
+      }
+
+      .suggestions {
+        grid-template-columns: 1fr;
+      }
+
+      .welcome {
+        margin-top: 35px;
       }
     }
   </style>
@@ -237,38 +470,205 @@
 
 <div class="app">
 
-  <header>
-    <div class="brand">
-      <div class="logo">Y</div>
+  <!-- HEADER -->
 
-      <div class="brand-text">
-        <strong>Yazdan AI</strong>
-        <span>دستیار هوش مصنوعی</span>
+  <header>
+
+    <div class="brand">
+
+      <div class="logo">
+        AI
       </div>
+
+      <div class="brandText">
+
+        <strong id="appName">
+          AfghanAI
+        </strong>
+
+        <span id="appSubtitle">
+          دستیار هوش مصنوعی
+        </span>
+
+      </div>
+
     </div>
 
-    <button class="clear-btn" onclick="clearHistory()">
-      پاک کردن
-    </button>
+    <div class="headerButtons">
+
+      <button
+        class="iconButton"
+        onclick="toggleLanguagePanel()"
+        title="Language"
+      >
+        🌐
+      </button>
+
+      <button
+        class="iconButton"
+        onclick="clearHistory()"
+        title="Clear"
+      >
+        🗑️
+      </button>
+
+    </div>
+
   </header>
+
+
+  <!-- LANGUAGE PANEL -->
+
+  <div
+    class="languagePanel"
+    id="languagePanel"
+  >
+
+    <div
+      class="panelTitle"
+      id="languageTitle"
+    >
+      انتخاب زبان
+    </div>
+
+    <button
+      class="languageOption"
+      data-language="auto"
+      onclick="selectLanguage('auto')"
+    >
+      🌐 خودکار
+    </button>
+
+    <button
+      class="languageOption"
+      data-language="fa"
+      onclick="selectLanguage('fa')"
+    >
+      🇦🇫 فارسی / دری
+    </button>
+
+    <button
+      class="languageOption"
+      data-language="en"
+      onclick="selectLanguage('en')"
+    >
+      🇬🇧 English
+    </button>
+
+    <button
+      class="languageOption"
+      data-language="fr"
+      onclick="selectLanguage('fr')"
+    >
+      🇫🇷 Français
+    </button>
+
+    <button
+      class="languageOption"
+      data-language="ar"
+      onclick="selectLanguage('ar')"
+    >
+      🇸🇦 العربية
+    </button>
+
+    <button
+      class="languageOption"
+      data-language="de"
+      onclick="selectLanguage('de')"
+    >
+      🇩🇪 Deutsch
+    </button>
+
+    <button
+      class="languageOption"
+      data-language="tr"
+      onclick="selectLanguage('tr')"
+    >
+      🇹🇷 Türkçe
+    </button>
+
+    <button
+      class="languageOption"
+      data-language="ru"
+      onclick="selectLanguage('ru')"
+    >
+      🇷🇺 Русский
+    </button>
+
+    <button
+      class="languageOption"
+      data-language="es"
+      onclick="selectLanguage('es')"
+    >
+      🇪🇸 Español
+    </button>
+
+    <button
+      class="languageOption"
+      data-language="zh"
+      onclick="selectLanguage('zh')"
+    >
+      🇨🇳 中文
+    </button>
+
+    <button
+      class="languageOption"
+      data-language="ja"
+      onclick="selectLanguage('ja')"
+    >
+      🇯🇵 日本語
+    </button>
+
+    <button
+      class="languageOption"
+      data-language="ko"
+      onclick="selectLanguage('ko')"
+    >
+      🇰🇷 한국어
+    </button>
+
+    <button
+      class="languageOption"
+      data-language="hi"
+      onclick="selectLanguage('hi')"
+    >
+      🇮🇳 हिन्दी
+    </button>
+
+  </div>
+
+
+  <!-- CHAT -->
 
   <main id="chat"></main>
 
-  <div class="typing" id="typing">
-    Yazdan AI در حال فکر کردن است...
+
+  <!-- TYPING -->
+
+  <div
+    class="typing"
+    id="typing"
+  >
+    <span id="typingText">
+      در حال فکر کردن...
+    </span>
   </div>
 
+
+  <!-- INPUT -->
+
   <div class="bottom">
-    <div class="input-box">
+
+    <div class="inputBox">
 
       <textarea
         id="messageInput"
-        placeholder="پیام خود را بنویسید..."
         rows="1"
+        placeholder="پیام خود را بنویسید..."
       ></textarea>
 
       <button
-        class="send"
+        class="sendButton"
         id="sendButton"
         onclick="sendMessage()"
       >
@@ -276,242 +676,878 @@
       </button>
 
     </div>
+
   </div>
 
 </div>
 
+
 <script>
 
-const STORAGE_KEY = "yazdan_ai_history_v1";
+const STORAGE_KEY =
+  "afghanai_history_v2";
 
-let messages = loadHistory();
+const LANGUAGE_KEY =
+  "afghanai_language";
 
-const chat = document.getElementById("chat");
-const input = document.getElementById("messageInput");
-const sendButton = document.getElementById("sendButton");
-const typing = document.getElementById("typing");
+let selectedLanguage =
+  localStorage.getItem(LANGUAGE_KEY) || "auto";
+
+let messages =
+  loadHistory();
+
+
+const chat =
+  document.getElementById("chat");
+
+const input =
+  document.getElementById("messageInput");
+
+const sendButton =
+  document.getElementById("sendButton");
+
+const typing =
+  document.getElementById("typing");
+
+const typingText =
+  document.getElementById("typingText");
+
+const languagePanel =
+  document.getElementById("languagePanel");
+
+
+/* =====================================================
+   TRANSLATIONS
+===================================================== */
+
+const UI = {
+
+  fa: {
+    subtitle: "دستیار هوش مصنوعی",
+    language: "انتخاب زبان",
+    auto: "خودکار",
+    placeholder: "پیام خود را بنویسید...",
+    thinking: "در حال فکر کردن...",
+    welcomeTitle: "سلام، من AfghanAI هستم",
+    welcomeText:
+      "هر سوالی داری بنویس. من می‌توانم به زبان‌های مختلف با تو گفتگو کنم.",
+    clearConfirm:
+      "آیا می‌خواهید تمام تاریخچه گفتگو پاک شود؟",
+    error:
+      "❌ خطا در اتصال به هوش مصنوعی.\n\nلطفاً دوباره تلاش کنید.",
+    suggestions: [
+      "خودت را معرفی کن",
+      "چطور برنامه بسازم؟",
+      "GitHub چیست؟",
+      "به من انگلیسی یاد بده"
+    ]
+  },
+
+  en: {
+    subtitle: "AI Assistant",
+    language: "Select language",
+    auto: "Automatic",
+    placeholder: "Write your message...",
+    thinking: "Thinking...",
+    welcomeTitle: "Hello, I'm AfghanAI",
+    welcomeText:
+      "Ask me anything. I can communicate with you in many languages.",
+    clearConfirm:
+      "Do you want to delete all chat history?",
+    error:
+      "❌ AI connection error.\n\nPlease try again.",
+    suggestions: [
+      "Introduce yourself",
+      "How can I build an app?",
+      "What is GitHub?",
+      "Teach me English"
+    ]
+  },
+
+  fr: {
+    subtitle: "Assistant IA",
+    language: "Choisir la langue",
+    auto: "Automatique",
+    placeholder: "Écrivez votre message...",
+    thinking: "Réflexion...",
+    welcomeTitle: "Bonjour, je suis AfghanAI",
+    welcomeText:
+      "Posez-moi vos questions. Je peux communiquer dans plusieurs langues.",
+    clearConfirm:
+      "Voulez-vous supprimer tout l'historique ?",
+    error:
+      "❌ Erreur de connexion à l'IA.\n\nVeuillez réessayer.",
+    suggestions: [
+      "Présente-toi",
+      "Comment créer une application ?",
+      "Qu'est-ce que GitHub ?",
+      "Apprends-moi l'anglais"
+    ]
+  },
+
+  ar: {
+    subtitle: "مساعد الذكاء الاصطناعي",
+    language: "اختر اللغة",
+    auto: "تلقائي",
+    placeholder: "اكتب رسالتك...",
+    thinking: "جاري التفكير...",
+    welcomeTitle: "مرحباً، أنا AfghanAI",
+    welcomeText:
+      "اسألني أي شيء. يمكنني التواصل معك بعدة لغات.",
+    clearConfirm:
+      "هل تريد حذف سجل المحادثة بالكامل؟",
+    error:
+      "❌ حدث خطأ في الاتصال بالذكاء الاصطناعي.\n\nحاول مرة أخرى.",
+    suggestions: [
+      "عرّف بنفسك",
+      "كيف أصنع تطبيقاً؟",
+      "ما هو GitHub؟",
+      "علّمني الإنجليزية"
+    ]
+  },
+
+  de: {
+    subtitle: "KI-Assistent",
+    language: "Sprache auswählen",
+    auto: "Automatisch",
+    placeholder: "Nachricht schreiben...",
+    thinking: "Denke nach...",
+    welcomeTitle: "Hallo, ich bin AfghanAI",
+    welcomeText:
+      "Stelle mir Fragen. Ich kann mit dir in vielen Sprachen kommunizieren.",
+    clearConfirm:
+      "Möchtest du den gesamten Chatverlauf löschen?",
+    error:
+      "❌ Fehler bei der Verbindung zur KI.\n\nBitte versuche es erneut.",
+    suggestions: [
+      "Stell dich vor",
+      "Wie erstelle ich eine App?",
+      "Was ist GitHub?",
+      "Bring mir Englisch bei"
+    ]
+  },
+
+  es: {
+    subtitle: "Asistente de IA",
+    language: "Seleccionar idioma",
+    auto: "Automático",
+    placeholder: "Escribe tu mensaje...",
+    thinking: "Pensando...",
+    welcomeTitle: "Hola, soy AfghanAI",
+    welcomeText:
+      "Pregúntame lo que quieras. Puedo comunicarme en varios idiomas.",
+    clearConfirm:
+      "¿Quieres borrar todo el historial?",
+    error:
+      "❌ Error de conexión con la IA.\n\nInténtalo de nuevo.",
+    suggestions: [
+      "Preséntate",
+      "¿Cómo creo una aplicación?",
+      "¿Qué es GitHub?",
+      "Enséñame inglés"
+    ]
+  },
+
+  tr: {
+    subtitle: "Yapay Zeka Asistanı",
+    language: "Dil seç",
+    auto: "Otomatik",
+    placeholder: "Mesajınızı yazın...",
+    thinking: "Düşünüyor...",
+    welcomeTitle: "Merhaba, ben AfghanAI",
+    welcomeText:
+      "Bana istediğiniz soruyu sorabilirsiniz. Birçok dilde iletişim kurabilirim.",
+    clearConfirm:
+      "Tüm sohbet geçmişini silmek istiyor musunuz?",
+    error:
+      "❌ Yapay zeka bağlantı hatası.\n\nLütfen tekrar deneyin.",
+    suggestions: [
+      "Kendini tanıt",
+      "Nasıl uygulama yapabilirim?",
+      "GitHub nedir?",
+      "Bana İngilizce öğret"
+    ]
+  },
+
+  ru: {
+    subtitle: "ИИ-помощник",
+    language: "Выберите язык",
+    auto: "Автоматически",
+    placeholder: "Напишите сообщение...",
+    thinking: "Думаю...",
+    welcomeTitle: "Здравствуйте, я AfghanAI",
+    welcomeText:
+      "Задавайте любые вопросы. Я могу общаться на разных языках.",
+    clearConfirm:
+      "Удалить всю историю чата?",
+    error:
+      "❌ Ошибка подключения к ИИ.\n\nПопробуйте ещё раз.",
+    suggestions: [
+      "Представься",
+      "Как создать приложение?",
+      "Что такое GitHub?",
+      "Научи меня английскому"
+    ]
+  },
+
+  zh: {
+    subtitle: "人工智能助手",
+    language: "选择语言",
+    auto: "自动",
+    placeholder: "输入您的消息...",
+    thinking: "正在思考...",
+    welcomeTitle: "你好，我是 AfghanAI",
+    welcomeText:
+      "你可以问我任何问题。我可以使用多种语言与你交流。",
+    clearConfirm:
+      "确定删除所有聊天记录吗？",
+    error:
+      "❌ AI连接错误。\n\n请再试一次。",
+    suggestions: [
+      "介绍一下你自己",
+      "如何制作应用？",
+      "GitHub是什么？",
+      "教我英语"
+    ]
+  },
+
+  ja: {
+    subtitle: "AIアシスタント",
+    language: "言語を選択",
+    auto: "自動",
+    placeholder: "メッセージを入力...",
+    thinking: "考えています...",
+    welcomeTitle: "こんにちは、AfghanAIです",
+    welcomeText:
+      "何でも質問してください。多くの言語で会話できます。",
+    clearConfirm:
+      "チャット履歴をすべて削除しますか？",
+    error:
+      "❌ AI接続エラーです。\n\nもう一度お試しください。",
+    suggestions: [
+      "自己紹介して",
+      "アプリを作るには？",
+      "GitHubとは？",
+      "英語を教えて"
+    ]
+  },
+
+  ko: {
+    subtitle: "AI 어시스턴트",
+    language: "언어 선택",
+    auto: "자동",
+    placeholder: "메시지를 입력하세요...",
+    thinking: "생각하는 중...",
+    welcomeTitle: "안녕하세요, AfghanAI입니다",
+    welcomeText:
+      "무엇이든 질문하세요. 여러 언어로 대화할 수 있습니다.",
+    clearConfirm:
+      "모든 채팅 기록을 삭제하시겠습니까?",
+    error:
+      "❌ AI 연결 오류입니다.\n\n다시 시도해주세요.",
+    suggestions: [
+      "자기소개해줘",
+      "앱을 어떻게 만들까요?",
+      "GitHub가 무엇인가요?",
+      "영어를 가르쳐줘"
+    ]
+  },
+
+  hi: {
+    subtitle: "AI सहायक",
+    language: "भाषा चुनें",
+    auto: "स्वचालित",
+    placeholder: "अपना संदेश लिखें...",
+    thinking: "सोच रहा हूँ...",
+    welcomeTitle: "नमस्ते, मैं AfghanAI हूँ",
+    welcomeText:
+      "आप मुझसे कोई भी सवाल पूछ सकते हैं। मैं कई भाषाओं में बात कर सकता हूँ।",
+    clearConfirm:
+      "क्या आप पूरी चैट हिस्ट्री हटाना चाहते हैं?",
+    error:
+      "❌ AI कनेक्शन में समस्या हुई।\n\nकृपया फिर कोशिश करें।",
+    suggestions: [
+      "अपना परिचय दो",
+      "ऐप कैसे बनाऊँ?",
+      "GitHub क्या है?",
+      "मुझे अंग्रेज़ी सिखाओ"
+    ]
+  }
+
+};
+
+
+/* =====================================================
+   GET UI LANGUAGE
+===================================================== */
+
+function getUILanguage() {
+
+  if (selectedLanguage !== "auto") {
+    return selectedLanguage;
+  }
+
+  const browser =
+    navigator.language || "fa";
+
+  const code =
+    browser.split("-")[0].toLowerCase();
+
+  if (UI[code]) {
+    return code;
+  }
+
+  return "fa";
+}
+
+
+/* =====================================================
+   UPDATE INTERFACE
+===================================================== */
+
+function updateInterface() {
+
+  const lang =
+    getUILanguage();
+
+  const t =
+    UI[lang];
+
+  document.documentElement.lang =
+    lang;
+
+  document.documentElement.dir =
+    ["fa", "ar"].includes(lang)
+      ? "rtl"
+      : "ltr";
+
+  document.getElementById(
+    "appSubtitle"
+  ).textContent =
+    t.subtitle;
+
+  document.getElementById(
+    "languageTitle"
+  ).textContent =
+    t.language;
+
+  document.getElementById(
+    "typingText"
+  ).textContent =
+    t.thinking;
+
+  input.placeholder =
+    t.placeholder;
+
+  document
+    .querySelectorAll(".languageOption")
+    .forEach(button => {
+
+      button.classList.toggle(
+        "selected",
+        button.dataset.language ===
+        selectedLanguage
+      );
+
+    });
+
+  render();
+
+}
+
+
+/* =====================================================
+   LANGUAGE PANEL
+===================================================== */
+
+function toggleLanguagePanel() {
+
+  languagePanel.classList.toggle(
+    "active"
+  );
+
+}
+
+function selectLanguage(language) {
+
+  selectedLanguage =
+    language;
+
+  localStorage.setItem(
+    LANGUAGE_KEY,
+    language
+  );
+
+  languagePanel.classList.remove(
+    "active"
+  );
+
+  updateInterface();
+
+}
+
+
+/* =====================================================
+   CLOSE PANEL WHEN CLICK OUTSIDE
+===================================================== */
+
+document.addEventListener(
+  "click",
+  function(event) {
+
+    const inside =
+      languagePanel.contains(event.target);
+
+    const languageButton =
+      event.target.closest(
+        ".iconButton"
+      );
+
+    if (
+      !inside &&
+      !languageButton
+    ) {
+
+      languagePanel.classList.remove(
+        "active"
+      );
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   HISTORY
+===================================================== */
 
 function loadHistory() {
+
   try {
-    const saved = localStorage.getItem(STORAGE_KEY);
+
+    const saved =
+      localStorage.getItem(
+        STORAGE_KEY
+      );
 
     if (!saved) {
       return [];
     }
 
-    const data = JSON.parse(saved);
+    const data =
+      JSON.parse(saved);
 
-    if (!Array.isArray(data)) {
-      return [];
-    }
-
-    return data;
+    return Array.isArray(data)
+      ? data
+      : [];
 
   } catch (error) {
-    console.error(error);
+
     return [];
+
   }
+
 }
 
+
 function saveHistory() {
+
   try {
+
     localStorage.setItem(
       STORAGE_KEY,
       JSON.stringify(messages)
     );
+
   } catch (error) {
-    console.error("Could not save history:", error);
+
+    console.error(
+      "History save error:",
+      error
+    );
+
   }
+
 }
 
+
+/* =====================================================
+   ESCAPE
+===================================================== */
+
 function escapeHTML(text) {
+
   return String(text)
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;");
+
 }
+
+
+/* =====================================================
+   RENDER
+===================================================== */
 
 function render() {
 
   chat.innerHTML = "";
 
+  const lang =
+    getUILanguage();
+
+  const t =
+    UI[lang];
+
+
   if (messages.length === 0) {
 
+    const suggestions =
+      t.suggestions
+        .map(text => {
+
+          return `
+            <button
+              class="suggestion"
+              onclick="useSuggestion(this)"
+            >
+              ${escapeHTML(text)}
+            </button>
+          `;
+
+        })
+        .join("");
+
+
     chat.innerHTML = `
+
       <div class="welcome">
 
-        <div class="welcome-icon">
+        <div class="welcomeIcon">
           🤖
         </div>
 
-        <h2>سلام، من Yazdan AI هستم</h2>
+        <h2>
+          ${escapeHTML(t.welcomeTitle)}
+        </h2>
 
         <p>
-          هر سوالی داری بنویس.<br>
-          می‌توانم در برنامه‌نویسی، GitHub،
-          Vercel و موضوعات مختلف کمکت کنم.
+          ${escapeHTML(t.welcomeText)}
         </p>
 
+        <div class="suggestions">
+          ${suggestions}
+        </div>
+
       </div>
+
     `;
 
     return;
   }
 
+
   messages.forEach(message => {
 
-    const wrapper = document.createElement("div");
+    const wrapper =
+      document.createElement("div");
 
     wrapper.className =
       "message " +
-      (message.role === "user"
-        ? "user"
-        : "assistant");
+      (
+        message.role === "user"
+          ? "user"
+          : "assistant"
+      );
 
-    const bubble = document.createElement("div");
 
-    bubble.className = "bubble";
+    const bubble =
+      document.createElement("div");
+
+    bubble.className =
+      "bubble";
 
     bubble.innerHTML =
-      escapeHTML(message.content);
+      escapeHTML(
+        message.content
+      );
 
-    wrapper.appendChild(bubble);
 
-    chat.appendChild(wrapper);
+    wrapper.appendChild(
+      bubble
+    );
+
+    chat.appendChild(
+      wrapper
+    );
+
   });
 
+
   scrollToBottom();
+
 }
 
-function scrollToBottom() {
-  setTimeout(() => {
-    chat.scrollTop = chat.scrollHeight;
-  }, 50);
+
+function useSuggestion(button) {
+
+  input.value =
+    button.textContent.trim();
+
+  input.focus();
+
+  sendMessage();
+
 }
+
+
+/* =====================================================
+   SCROLL
+===================================================== */
+
+function scrollToBottom() {
+
+  setTimeout(() => {
+
+    chat.scrollTop =
+      chat.scrollHeight;
+
+  }, 50);
+
+}
+
+
+/* =====================================================
+   SEND MESSAGE
+===================================================== */
 
 async function sendMessage() {
 
-  const text = input.value.trim();
+  const text =
+    input.value.trim();
+
 
   if (!text) {
     return;
   }
 
+
   if (sendButton.disabled) {
     return;
   }
 
+
   messages.push({
+
     role: "user",
+
     content: text
+
   });
 
+
   saveHistory();
+
   render();
 
-  input.value = "";
-  input.style.height = "auto";
 
-  sendButton.disabled = true;
-  typing.classList.add("active");
+  input.value = "";
+
+  input.style.height =
+    "auto";
+
+
+  sendButton.disabled =
+    true;
+
+  typing.classList.add(
+    "active"
+  );
+
 
   scrollToBottom();
 
+
   try {
 
-    const response = await fetch("/api/chat", {
+    const response =
+      await fetch(
+        "/api/chat",
+        {
 
-      method: "POST",
+          method: "POST",
 
-      headers: {
-        "Content-Type": "application/json"
-      },
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
 
-      body: JSON.stringify({
-        messages: messages.slice(-20)
-      })
+          body:
+            JSON.stringify({
 
-    });
+              messages:
+                messages.slice(-20),
 
-    const data = await response.json();
+              language:
+                selectedLanguage
 
-    if (!response.ok || !data.success) {
+            })
+
+        }
+      );
+
+
+    const data =
+      await response.json();
+
+
+    if (
+      !response.ok ||
+      !data.success
+    ) {
 
       throw new Error(
-        data.error || "خطا در ارتباط با هوش مصنوعی"
+        data.error ||
+        "AI error"
       );
 
     }
 
+
     messages.push({
+
       role: "assistant",
-      content: data.reply
+
+      content:
+        data.reply
+
     });
 
+
     saveHistory();
+
     render();
+
 
   } catch (error) {
 
     console.error(error);
 
+
+    const lang =
+      getUILanguage();
+
     messages.push({
+
       role: "assistant",
+
       content:
-        "❌ خطا در اتصال به هوش مصنوعی.\n\n" +
-        "لطفاً دوباره تلاش کنید."
+        UI[lang].error
+
     });
 
+
     saveHistory();
+
     render();
 
   } finally {
 
-    sendButton.disabled = false;
-    typing.classList.remove("active");
+    sendButton.disabled =
+      false;
+
+    typing.classList.remove(
+      "active"
+    );
 
     input.focus();
+
   }
+
 }
+
+
+/* =====================================================
+   CLEAR
+===================================================== */
 
 function clearHistory() {
 
-  const confirmed = confirm(
-    "آیا می‌خواهید تمام تاریخچه گفتگو پاک شود؟"
-  );
+  const lang =
+    getUILanguage();
+
+  const confirmed =
+    confirm(
+      UI[lang].clearConfirm
+    );
+
 
   if (!confirmed) {
     return;
   }
 
+
   messages = [];
 
-  localStorage.removeItem(STORAGE_KEY);
+  localStorage.removeItem(
+    STORAGE_KEY
+  );
 
   render();
+
 }
 
-input.addEventListener("keydown", function(event) {
 
-  if (event.key === "Enter" && !event.shiftKey) {
+/* =====================================================
+   ENTER TO SEND
+===================================================== */
 
-    event.preventDefault();
+input.addEventListener(
+  "keydown",
+  function(event) {
 
-    sendMessage();
+    if (
+      event.key === "Enter" &&
+      !event.shiftKey
+    ) {
+
+      event.preventDefault();
+
+      sendMessage();
+
+    }
+
   }
+);
 
-});
 
-input.addEventListener("input", function() {
+/* =====================================================
+   AUTO RESIZE
+===================================================== */
 
-  this.style.height = "auto";
+input.addEventListener(
+  "input",
+  function() {
 
-  this.style.height =
-    Math.min(this.scrollHeight, 110) + "px";
+    this.style.height =
+      "auto";
 
-});
+    this.style.height =
+      Math.min(
+        this.scrollHeight,
+        120
+      ) + "px";
 
-render();
+  }
+);
+
+
+/* =====================================================
+   START
+===================================================== */
+
+updateInterface();
 
 </script>
 
