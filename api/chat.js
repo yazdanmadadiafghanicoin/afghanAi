@@ -1,12 +1,10 @@
 export default async function handler(req, res) {
 
   if (req.method !== "POST") {
-
     return res.status(405).json({
       success: false,
       error: "Only POST is allowed"
     });
-
   }
 
   try {
@@ -15,50 +13,42 @@ export default async function handler(req, res) {
       process.env.GROQ_API_KEY;
 
     if (!apiKey) {
-
       return res.status(500).json({
         success: false,
         error:
           "GROQ_API_KEY is not configured in Vercel"
       });
-
     }
 
-    const body =
-      req.body || {};
-
-    const messages =
-      body.messages;
-
-    const language =
-      body.language || "auto";
+    const {
+      messages,
+      language = "auto",
+      webContext = ""
+    } = req.body || {};
 
     if (!Array.isArray(messages)) {
-
       return res.status(400).json({
         success: false,
         error:
           "messages must be an array"
       });
-
     }
 
     const languageInstructions = {
 
       auto: `
-به زبان خود کاربر پاسخ بده.
-اگر کاربر فارسی یا دری نوشت، به فارسی/دری پاسخ بده.
-اگر انگلیسی نوشت، انگلیسی پاسخ بده.
-زبان کاربر را خودت تشخیص بده.
+به زبان کاربر پاسخ بده.
+اگر فارسی یا دری پرسید، فارسی/دری جواب بده.
+اگر انگلیسی پرسید، انگلیسی جواب بده.
+زبان کاربر را تشخیص بده.
 `,
 
       fa: `
 فقط به فارسی/دری پاسخ بده.
-از زبان واضح و طبیعی افغانستان استفاده کن.
 `,
 
       en: `
-Answer only in English.
+Only answer in English.
 `,
 
       fr: `
@@ -70,7 +60,7 @@ Réponds uniquement en français.
 `,
 
       de: `
-Antworte ausschließlich auf Deutsch.
+Antworte nur auf Deutsch.
 `,
 
       tr: `
@@ -98,7 +88,7 @@ Responde únicamente en español.
 `,
 
       hi: `
-केवल हिंदी में उत्तर दें।
+केवल हिंदी में उत्तर दें。
 `
 
     };
@@ -107,32 +97,62 @@ Responde únicamente en español.
       languageInstructions[language] ||
       languageInstructions.auto;
 
+    let webInstruction = "";
+
+    if (webContext) {
+
+      webInstruction = `
+
+مهم:
+نتایج زیر از جستجوی اینترنتی آمده‌اند.
+
+اگر سؤال کاربر مربوط به اطلاعات جدید،
+قیمت، اخبار، رویدادها یا اطلاعات فعلی است،
+از این نتایج برای پاسخ استفاده کن.
+
+اطلاعاتی که در نتایج نیست را به عنوان
+اطلاعات جستجو شده ادعا نکن.
+
+اگر منابع کافی نیستند، صادقانه بگو.
+
+نتایج اینترنت:
+
+${webContext}
+
+`;
+
+    }
+
     const systemMessage = {
 
       role: "system",
 
       content: `
+
 تو AfghanAI هستی؛ یک دستیار هوش مصنوعی شخصی.
 
-وظایف تو:
-- پاسخ‌گویی به سوالات عمومی
-- کمک به برنامه‌نویسی
-- کمک به GitHub
-- کمک به Vercel
-- کمک به ساخت وب‌سایت و اپلیکیشن
+وظایف:
+- پاسخ به سوالات عمومی
+- برنامه‌نویسی
+- GitHub
+- Vercel
+- ساخت سایت و اپلیکیشن
 - آموزش مرحله‌به‌مرحله
-- کمک به پروژه‌های کاربر
-- پاسخ واضح و کاربردی
+- پروژه‌های کاربر
+- تحلیل اطلاعات اینترنتی
 
 قوانین:
-- چیزی را که مطمئن نیستی به عنوان واقعیت بیان نکن.
-- اگر اطلاعات کافی نداری، صادقانه بگو.
-- پاسخ‌ها را بیش از حد طولانی نکن مگر اینکه کاربر جزئیات بخواهد.
-- اگر کاربر درخواست کد کامل کرد، کد کامل و قابل استفاده بده.
-- اگر کاربر تازه‌کار است، مراحل را ساده توضیح بده.
+- حدس را به عنوان واقعیت بیان نکن.
+- اگر مطمئن نیستی بگو.
+- پاسخ‌ها واضح و کاربردی باشند.
+- اگر کاربر کد کامل خواست، کد کامل بده.
+- برای اطلاعات جدید، نتایج جستجوی وب را در نظر بگیر.
 
 زبان:
 ${languageInstruction}
+
+${webInstruction}
+
 `
 
     };
@@ -147,26 +167,15 @@ ${languageInstruction}
           if (
             message.role === "assistant"
           ) {
-
             role = "assistant";
-
-          } else if (
-            message.role === "system"
-          ) {
-
-            role = "system";
-
           }
 
           return {
-
             role,
-
             content:
               String(
                 message.content || ""
               ).slice(0, 8000)
-
           };
 
         });
@@ -179,13 +188,11 @@ ${languageInstruction}
           method: "POST",
 
           headers: {
-
             "Content-Type":
               "application/json",
 
             "Authorization":
               `Bearer ${apiKey}`
-
           },
 
           body: JSON.stringify({
