@@ -1,530 +1,386 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
-<meta name="theme-color" content="#07111f">
-<title>AfghanAI</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <meta name="theme-color" content="#07111f">
+  <title>AfghanAI</title>
 
-<style>
-*{
-  box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent;
-}
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-body{
-  margin:0;
-  min-height:100vh;
-  background:
-    radial-gradient(circle at top,#17335e 0,#07111f 42%,#030712 100%);
-  color:#fff;
-  font-family:system-ui,-apple-system,BlinkMacSystemFont,
-  "Segoe UI",Tahoma,Arial,sans-serif;
-}
+    body {
+      margin: 0;
+      background: #050b14;
+      color: #f5f7fa;
+      font-family: Tahoma, Arial, sans-serif;
+      height: 100vh;
+      overflow: hidden;
+    }
 
-button,textarea,select{
-  font:inherit;
-}
+    .app {
+      height: 100vh;
+      max-width: 700px;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      background: #08111d;
+    }
 
-.app{
-  max-width:900px;
-  margin:auto;
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
-}
+    header {
+      padding: 13px 14px;
+      background: #0b1726;
+      border-bottom: 1px solid #1c2b3c;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
 
-header{
-  position:sticky;
-  top:0;
-  z-index:20;
-  background:rgba(3,7,18,.88);
-  backdrop-filter:blur(18px);
-  border-bottom:1px solid rgba(255,255,255,.08);
-  padding:12px;
-}
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-.header{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-}
+    .logo {
+      width: 42px;
+      height: 42px;
+      border-radius: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      font-weight: bold;
+      background: linear-gradient(135deg,#19c37d,#087f5b);
+      box-shadow: 0 5px 20px rgba(25,195,125,.2);
+    }
 
-.brand{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
+    .brand h1 {
+      margin: 0;
+      font-size: 18px;
+    }
 
-.logo{
-  width:44px;
-  height:44px;
-  border-radius:15px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  background:linear-gradient(135deg,#2563eb,#7c3aed);
-  box-shadow:0 8px 30px rgba(37,99,235,.35);
-  font-size:23px;
-}
+    .brand small {
+      color: #8291a5;
+      font-size: 11px;
+    }
 
-.title{
-  font-size:19px;
-  font-weight:800;
-}
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
 
-.subtitle{
-  font-size:11px;
-  color:#94a3b8;
-}
+    select,
+    button {
+      border: 0;
+      outline: 0;
+      font-family: inherit;
+    }
 
-.actions{
-  display:flex;
-  align-items:center;
-  gap:6px;
-}
+    select {
+      background: #142235;
+      color: white;
+      border: 1px solid #26384d;
+      padding: 8px 7px;
+      border-radius: 9px;
+      font-size: 11px;
+    }
 
-select{
-  height:40px;
-  border-radius:12px;
-  border:1px solid rgba(255,255,255,.1);
-  background:rgba(255,255,255,.05);
-  color:#fff;
-  padding:0 7px;
-  outline:none;
-}
+    .clear-btn {
+      background: #182538;
+      color: #c7d1dd;
+      padding: 9px;
+      border-radius: 9px;
+      cursor: pointer;
+    }
 
-select option{
-  color:#111;
-}
+    .search-bar {
+      padding: 9px 12px;
+      background: #091522;
+      border-bottom: 1px solid #172638;
+    }
 
-.icon{
-  width:40px;
-  height:40px;
-  border-radius:12px;
-  border:1px solid rgba(255,255,255,.1);
-  background:rgba(255,255,255,.05);
-  color:#fff;
-  cursor:pointer;
-}
+    .web-toggle {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 9px;
+      border-radius: 10px;
+      background: #10382e;
+      color: #43e6a4;
+      border: 1px solid #176148;
+      cursor: pointer;
+      font-size: 12px;
+    }
 
-.icon.active{
-  background:#2563eb;
-}
+    .web-toggle.off {
+      background: #172130;
+      color: #8291a5;
+      border-color: #293648;
+    }
 
-#chat{
-  flex:1;
-  padding:20px 13px 155px;
-  overflow-y:auto;
-}
+    #chat {
+      flex: 1;
+      overflow-y: auto;
+      padding: 15px 12px 10px;
+      scroll-behavior: smooth;
+    }
 
-.welcome{
-  text-align:center;
-  padding:45px 15px 25px;
-}
+    .welcome {
+      text-align: center;
+      padding: 25px 15px;
+      color: #8998ab;
+    }
 
-.welcome-icon{
-  font-size:55px;
-}
+    .welcome-icon {
+      font-size: 45px;
+      margin-bottom: 8px;
+    }
 
-.welcome h1{
-  margin:10px 0;
-  font-size:27px;
-}
+    .welcome h2 {
+      color: #e9eef5;
+      margin: 5px 0;
+      font-size: 21px;
+    }
 
-.welcome p{
-  color:#94a3b8;
-  line-height:1.8;
-  max-width:600px;
-  margin:0 auto 25px;
-}
+    .welcome p {
+      font-size: 13px;
+      line-height: 1.8;
+    }
 
-.suggestions{
-  max-width:650px;
-  margin:auto;
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:9px;
-}
+    .suggestions {
+      display: grid;
+      gap: 8px;
+      margin-top: 18px;
+    }
 
-.suggestion{
-  color:#e2e8f0;
-  background:rgba(255,255,255,.045);
-  border:1px solid rgba(255,255,255,.09);
-  border-radius:15px;
-  padding:13px;
-  cursor:pointer;
-  text-align:right;
-}
+    .suggestion {
+      background: #101d2d;
+      border: 1px solid #213249;
+      color: #d9e1eb;
+      border-radius: 12px;
+      padding: 11px;
+      cursor: pointer;
+      text-align: right;
+      font-size: 12px;
+    }
 
-.suggestion:hover{
-  background:rgba(255,255,255,.08);
-}
+    .message {
+      display: flex;
+      margin: 9px 0;
+    }
 
-.message{
-  display:flex;
-  margin:13px 0;
-}
+    .message.user {
+      justify-content: flex-start;
+    }
 
-.message.user{
-  justify-content:flex-start;
-}
+    .message.ai {
+      justify-content: flex-end;
+    }
 
-.message.assistant{
-  justify-content:flex-end;
-}
+    .bubble {
+      max-width: 88%;
+      padding: 11px 13px;
+      border-radius: 15px;
+      line-height: 1.8;
+      font-size: 13px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
 
-.wrap{
-  max-width:90%;
-}
+    .user .bubble {
+      background: #155e75;
+      border-bottom-left-radius: 5px;
+    }
 
-.bubble{
-  padding:13px 15px;
-  border-radius:18px;
-  line-height:1.85;
-  white-space:pre-wrap;
-  overflow-wrap:anywhere;
-  font-size:15px;
-}
+    .ai .bubble {
+      background: #142235;
+      border: 1px solid #21354b;
+      border-bottom-right-radius: 5px;
+    }
 
-.user .bubble{
-  background:linear-gradient(135deg,#2563eb,#1d4ed8);
-  border-bottom-left-radius:5px;
-}
+    .loading {
+      opacity: .7;
+    }
 
-.assistant .bubble{
-  background:rgba(255,255,255,.07);
-  border:1px solid rgba(255,255,255,.08);
-  border-bottom-right-radius:5px;
-}
+    .sources {
+      max-width: 88%;
+      margin-top: 6px;
+      background: #0d1825;
+      border: 1px solid #1e3147;
+      border-radius: 12px;
+      padding: 9px;
+    }
 
-.actions-row{
-  display:flex;
-  gap:5px;
-  margin-top:6px;
-  flex-wrap:wrap;
-}
+    .sources-title {
+      font-size: 11px;
+      color: #43e6a4;
+      margin-bottom: 7px;
+    }
 
-.small{
-  border:0;
-  background:rgba(255,255,255,.06);
-  color:#94a3b8;
-  padding:5px 9px;
-  border-radius:9px;
-  font-size:12px;
-  cursor:pointer;
-}
+    .source {
+      display: block;
+      text-decoration: none;
+      color: #9dc7ff;
+      border-top: 1px solid #19293b;
+      padding: 7px 2px;
+      font-size: 11px;
+      line-height: 1.6;
+    }
 
-.small:hover{
-  color:#fff;
-}
+    .source:first-of-type {
+      border-top: 0;
+    }
 
-.web-results{
-  margin-top:10px;
-  padding:10px;
-  border-radius:14px;
-  background:rgba(37,99,235,.08);
-  border:1px solid rgba(96,165,250,.14);
-}
+    .source small {
+      display: block;
+      color: #718196;
+      margin-top: 2px;
+    }
 
-.web-title{
-  font-size:12px;
-  color:#60a5fa;
-  margin-bottom:7px;
-  font-weight:700;
-}
+    .copy {
+      margin-top: 7px;
+      background: #0d1928;
+      color: #8192a7;
+      border: 1px solid #1e2e42;
+      border-radius: 7px;
+      padding: 5px 8px;
+      font-size: 10px;
+      cursor: pointer;
+    }
 
-.web-item{
-  padding:8px 0;
-  border-bottom:1px solid rgba(255,255,255,.06);
-}
+    .composer {
+      padding: 9px;
+      background: #0b1726;
+      border-top: 1px solid #1c2b3c;
+    }
 
-.web-item:last-child{
-  border-bottom:0;
-}
+    .input-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 7px;
+    }
 
-.web-item a{
-  color:#bfdbfe;
-  text-decoration:none;
-  font-size:13px;
-  font-weight:700;
-}
+    textarea {
+      flex: 1;
+      resize: none;
+      min-height: 45px;
+      max-height: 120px;
+      border: 1px solid #26384d;
+      background: #101d2d;
+      color: white;
+      border-radius: 13px;
+      padding: 12px;
+      outline: none;
+      font-family: inherit;
+      font-size: 13px;
+      direction: rtl;
+    }
 
-.web-item p{
-  color:#94a3b8;
-  font-size:11px;
-  line-height:1.6;
-  margin:4px 0 0;
-}
+    textarea:focus {
+      border-color: #19c37d;
+    }
 
-.typing{
-  display:inline-flex;
-  gap:4px;
-  padding:13px 15px;
-  background:rgba(255,255,255,.07);
-  border-radius:17px;
-}
+    .icon-btn {
+      width: 45px;
+      height: 45px;
+      border-radius: 13px;
+      background: #142235;
+      color: white;
+      cursor: pointer;
+      font-size: 18px;
+    }
 
-.typing span{
-  width:6px;
-  height:6px;
-  border-radius:50%;
-  background:#94a3b8;
-  animation:bounce 1.2s infinite;
-}
+    .send {
+      background: #19c37d;
+      color: #04140d;
+      font-weight: bold;
+    }
 
-.typing span:nth-child(2){
-  animation-delay:.15s;
-}
+    .status {
+      text-align: center;
+      color: #66788e;
+      font-size: 9px;
+      padding-top: 5px;
+    }
 
-.typing span:nth-child(3){
-  animation-delay:.3s;
-}
+    @media(max-width:420px) {
+      .brand h1 {
+        font-size: 16px;
+      }
 
-@keyframes bounce{
-  0%,60%,100%{transform:translateY(0)}
-  30%{transform:translateY(-5px)}
-}
-
-.composer{
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  z-index:30;
-  padding:10px 12px calc(10px + env(safe-area-inset-bottom));
-  background:linear-gradient(to top,#030712 65%,rgba(3,7,18,.8));
-  backdrop-filter:blur(18px);
-}
-
-.composer-inner{
-  max-width:900px;
-  margin:auto;
-}
-
-.search-row{
-  display:flex;
-  align-items:center;
-  gap:7px;
-  margin-bottom:7px;
-}
-
-.web-toggle{
-  height:32px;
-  padding:0 11px;
-  border-radius:10px;
-  border:1px solid rgba(255,255,255,.1);
-  background:rgba(255,255,255,.05);
-  color:#94a3b8;
-  cursor:pointer;
-  font-size:12px;
-}
-
-.web-toggle.active{
-  background:#2563eb;
-  color:#fff;
-}
-
-.search-hint{
-  font-size:10px;
-  color:#64748b;
-}
-
-.input-box{
-  display:flex;
-  align-items:flex-end;
-  gap:7px;
-  background:rgba(255,255,255,.055);
-  border:1px solid rgba(255,255,255,.1);
-  border-radius:18px;
-  padding:7px;
-}
-
-textarea{
-  flex:1;
-  min-height:43px;
-  max-height:130px;
-  resize:none;
-  border:0;
-  outline:0;
-  background:transparent;
-  color:#fff;
-  padding:10px;
-  line-height:1.6;
-}
-
-textarea::placeholder{
-  color:#64748b;
-}
-
-.send,
-.mic{
-  flex:0 0 auto;
-  width:43px;
-  height:43px;
-  border:0;
-  border-radius:13px;
-  color:#fff;
-  cursor:pointer;
-}
-
-.send{
-  background:linear-gradient(135deg,#2563eb,#7c3aed);
-}
-
-.mic{
-  background:rgba(255,255,255,.08);
-}
-
-.mic.recording{
-  background:#dc2626;
-}
-
-.status{
-  text-align:center;
-  color:#64748b;
-  font-size:10px;
-  margin-top:6px;
-}
-
-@media(max-width:480px){
-
-  .suggestions{
-    grid-template-columns:1fr;
-  }
-
-  .wrap{
-    max-width:94%;
-  }
-
-  .title{
-    font-size:17px;
-  }
-
-  .search-hint{
-    display:none;
-  }
-}
-</style>
+      .bubble,
+      .sources {
+        max-width: 92%;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
 <div class="app">
 
-<header>
-  <div class="header">
-
+  <header>
     <div class="brand">
-      <div class="logo">🤖</div>
-
+      <div class="logo">AI</div>
       <div>
-        <div class="title">AfghanAI</div>
-        <div class="subtitle" id="subtitle">
-          دستیار هوش مصنوعی
-        </div>
+        <h1>AfghanAI</h1>
+        <small>هوش مصنوعی چندزبانه</small>
       </div>
     </div>
 
-    <div class="actions">
-
+    <div class="header-actions">
       <select id="language">
-        <option value="auto">🌐 Auto</option>
-        <option value="fa">🇦🇫 فارسی</option>
-        <option value="en">🇺🇸 English</option>
-        <option value="fr">🇫🇷 Français</option>
-        <option value="ar">🇸🇦 العربية</option>
-        <option value="de">🇩🇪 Deutsch</option>
-        <option value="tr">🇹🇷 Türkçe</option>
-        <option value="ru">🇷🇺 Русский</option>
-        <option value="es">🇪🇸 Español</option>
-        <option value="zh">🇨🇳 中文</option>
-        <option value="ja">🇯🇵 日本語</option>
-        <option value="ko">🇰🇷 한국어</option>
-        <option value="hi">🇮🇳 हिन्दी</option>
+        <option value="auto">خودکار</option>
+        <option value="fa">فارسی</option>
+        <option value="en">English</option>
+        <option value="fr">Français</option>
+        <option value="ar">العربية</option>
+        <option value="de">Deutsch</option>
+        <option value="tr">Türkçe</option>
+        <option value="ru">Русский</option>
+        <option value="es">Español</option>
+        <option value="zh">中文</option>
+        <option value="ja">日本語</option>
+        <option value="ko">한국어</option>
+        <option value="hi">हिन्दी</option>
       </select>
 
-      <button class="icon" id="clearBtn">🗑️</button>
-
+      <button class="clear-btn" onclick="clearHistory()">🗑</button>
     </div>
+  </header>
 
-  </div>
-</header>
-
-<main id="chat">
-
-  <div class="welcome" id="welcome">
-
-    <div class="welcome-icon">🧠</div>
-
-    <h1 id="welcomeTitle">
-      سلام! من AfghanAI هستم
-    </h1>
-
-    <p id="welcomeText">
-      دستیار هوش مصنوعی شخصی شما با امکان جستجوی اینترنتی.
-    </p>
-
-    <div class="suggestions">
-
-      <button class="suggestion"
-        data-text="آخرین اخبار مهم بازار ارزهای دیجیتال چیست؟">
-        🌐 آخرین اخبار کریپتو
-      </button>
-
-      <button class="suggestion"
-        data-text="امروز قیمت بیت کوین چقدر است؟">
-        ₿ قیمت بیت کوین
-      </button>
-
-      <button class="suggestion"
-        data-text="جدیدترین اخبار فناوری چیست؟">
-        💻 اخبار فناوری
-      </button>
-
-      <button class="suggestion"
-        data-text="چطور یک سایت حرفه‌ای بسازم؟">
-        🛠️ ساخت سایت
-      </button>
-
-    </div>
-
+  <div class="search-bar">
+    <button id="webToggle" class="web-toggle" onclick="toggleWeb()">
+      🌐 جستجوی اینترنت: فعال
+    </button>
   </div>
 
-</main>
+  <main id="chat"></main>
 
-<div class="composer">
+  <div class="composer">
 
-  <div class="composer-inner">
+    <div class="input-row">
 
-    <div class="search-row">
-
-      <button
-        class="web-toggle active"
-        id="webToggle">
-        🌐 جستجوی اینترنت
-      </button>
-
-      <span class="search-hint">
-        برای سوال‌های جدید و قیمت‌ها روشن باشد
-      </span>
-
-    </div>
-
-    <div class="input-box">
-
-      <button class="mic" id="micBtn">
-        🎙️
+      <button id="micBtn" class="icon-btn" onclick="startVoice()">
+        🎤
       </button>
 
       <textarea
         id="input"
-        rows="1"
         placeholder="پیام خود را بنویسید..."
+        rows="1"
       ></textarea>
 
-      <button class="send" id="sendBtn">
+      <button class="icon-btn send" onclick="sendMessage()">
         ➤
       </button>
 
@@ -538,861 +394,468 @@ textarea::placeholder{
 
 </div>
 
-</div>
-
 <script>
-"use strict";
 
-const HISTORY_KEY = "afghanai_history_v6";
-const LANGUAGE_KEY = "afghanai_language_v6";
+const API_CHAT = "/api/chat";
+const API_SEARCH = "/api/search";
+
+const HISTORY_KEY = "afghanai_history_v7";
 
 let messages = [];
-let selectedLanguage =
-  localStorage.getItem(LANGUAGE_KEY) || "auto";
+let webSearch = true;
+let selectedLanguage = localStorage.getItem("afghanai_language") || "auto";
 
-let webSearchEnabled = true;
+const chat = document.getElementById("chat");
+const input = document.getElementById("input");
+const language = document.getElementById("language");
+const statusEl = document.getElementById("status");
+const webToggle = document.getElementById("webToggle");
 
-let recognition = null;
-let isRecording = false;
+language.value = selectedLanguage;
 
-const chat =
-  document.getElementById("chat");
+language.addEventListener("change", () => {
+  selectedLanguage = language.value;
+  localStorage.setItem("afghanai_language", selectedLanguage);
+});
 
-const input =
-  document.getElementById("input");
-
-const sendBtn =
-  document.getElementById("sendBtn");
-
-const micBtn =
-  document.getElementById("micBtn");
-
-const clearBtn =
-  document.getElementById("clearBtn");
-
-const language =
-  document.getElementById("language");
-
-const webToggle =
-  document.getElementById("webToggle");
-
-const status =
-  document.getElementById("status");
-
-const welcome =
-  document.getElementById("welcome");
-
-language.value =
-  selectedLanguage;
-
-/* =========================
-LANGUAGE
-========================= */
-
-function getLanguage(){
-
-  if(selectedLanguage !== "auto"){
-    return selectedLanguage;
-  }
-
-  const browser =
-    navigator.language?.slice(0,2);
-
-  return browser || "fa";
+function escapeHtml(text) {
+  return String(text)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
-function applyLanguage(){
+function showWelcome() {
+
+  if (messages.length > 0) return;
+
+  chat.innerHTML = `
+    <div class="welcome">
+      <div class="welcome-icon">🤖</div>
+      <h2>AfghanAI</h2>
+      <p>
+        هوش مصنوعی چندزبانه با قابلیت جستجوی اینترنت.
+        <br>
+        می‌توانی درباره خبرها، بازار، برنامه‌نویسی و موضوعات مختلف سؤال کنی.
+      </p>
+
+      <div class="suggestions">
+
+        <button class="suggestion"
+          onclick="useSuggestion('قیمت بیت کوین امروز چیست؟')">
+          ₿ قیمت بیت کوین امروز چیست؟
+        </button>
+
+        <button class="suggestion"
+          onclick="useSuggestion('آخرین خبرهای بازار کریپتو چیست؟')">
+          📰 آخرین خبرهای بازار کریپتو
+        </button>
+
+        <button class="suggestion"
+          onclick="useSuggestion('آخرین اخبار تکنولوژی چیست؟')">
+          💻 آخرین اخبار تکنولوژی
+        </button>
+
+        <button class="suggestion"
+          onclick="useSuggestion('چطور یک سایت حرفه‌ای بسازم؟')">
+          🌐 چطور یک سایت حرفه‌ای بسازم؟
+        </button>
 
-  const lang =
-    getLanguage();
-
-  const rtl =
-    ["fa","ar"].includes(lang);
-
-  document.documentElement.lang =
-    lang;
-
-  document.documentElement.dir =
-    rtl ? "rtl" : "ltr";
-
-}
-
-applyLanguage();
-
-/* =========================
-LOAD HISTORY
-========================= */
-
-function loadHistory(){
-
-  try{
-
-    const saved =
-      localStorage.getItem(HISTORY_KEY);
-
-    if(!saved) return;
-
-    const data =
-      JSON.parse(saved);
-
-    if(!Array.isArray(data)) return;
-
-    messages = data;
-
-    messages.forEach(m => {
-
-      addMessage(
-        m.role,
-        m.content,
-        false,
-        m.webResults || []
-      );
-
-    });
-
-    if(messages.length){
-      welcome.style.display =
-        "none";
-    }
-
-  }catch(error){
-
-    console.error(error);
-
-  }
-}
-
-loadHistory();
-
-/* =========================
-SAVE
-========================= */
-
-function saveHistory(){
-
-  localStorage.setItem(
-    HISTORY_KEY,
-    JSON.stringify(
-      messages.slice(-100)
-    )
-  );
-
-}
-
-/* =========================
-ESCAPE
-========================= */
-
-function escapeHTML(text){
-
-  const div =
-    document.createElement("div");
-
-  div.textContent =
-    text;
-
-  return div.innerHTML;
-
-}
-
-/* =========================
-ADD MESSAGE
-========================= */
-
-function addMessage(
-  role,
-  content,
-  scroll=true,
-  webResults=[]
-){
-
-  const message =
-    document.createElement("div");
-
-  message.className =
-    "message " + role;
-
-  const wrap =
-    document.createElement("div");
-
-  wrap.className =
-    "wrap";
-
-  const bubble =
-    document.createElement("div");
-
-  bubble.className =
-    "bubble";
-
-  bubble.innerHTML =
-    escapeHTML(content);
-
-  wrap.appendChild(bubble);
-
-  if(
-    role === "assistant" &&
-    webResults.length
-  ){
-
-    const web =
-      document.createElement("div");
-
-    web.className =
-      "web-results";
-
-    web.innerHTML =
-      `<div class="web-title">
-        🌐 منابع اینترنتی
-      </div>`;
-
-    webResults
-      .slice(0,5)
-      .forEach(result => {
-
-        const item =
-          document.createElement("div");
-
-        item.className =
-          "web-item";
-
-        item.innerHTML = `
-          <a href="${escapeHTML(result.url)}"
-             target="_blank"
-             rel="noopener noreferrer">
-             ${escapeHTML(result.title)}
-          </a>
-          <p>
-             ${escapeHTML(result.snippet || "")}
-          </p>
-        `;
-
-        web.appendChild(item);
-
-      });
-
-    wrap.appendChild(web);
-
-  }
-
-  if(role === "assistant"){
-
-    const actions =
-      document.createElement("div");
-
-    actions.className =
-      "actions-row";
-
-    const copy =
-      document.createElement("button");
-
-    copy.className =
-      "small";
-
-    copy.textContent =
-      "📋 کپی";
-
-    copy.onclick =
-      async () => {
-
-        await navigator.clipboard.writeText(
-          content
-        );
-
-        copy.textContent =
-          "✅ کپی شد";
-
-        setTimeout(
-          () => copy.textContent = "📋 کپی",
-          1500
-        );
-
-      };
-
-    actions.appendChild(copy);
-
-    wrap.appendChild(actions);
-
-  }
-
-  message.appendChild(wrap);
-
-  chat.appendChild(message);
-
-  if(scroll){
-    chat.scrollTop =
-      chat.scrollHeight;
-  }
-
-}
-
-/* =========================
-TYPING
-========================= */
-
-function showTyping(){
-
-  const el =
-    document.createElement("div");
-
-  el.id =
-    "typing";
-
-  el.className =
-    "message assistant";
-
-  el.innerHTML = `
-    <div class="wrap">
-      <div class="typing">
-        <span></span>
-        <span></span>
-        <span></span>
       </div>
     </div>
   `;
-
-  chat.appendChild(el);
-
-  chat.scrollTop =
-    chat.scrollHeight;
-
 }
 
-function hideTyping(){
+function loadHistory() {
 
-  document
-    .getElementById("typing")
-    ?.remove();
+  try {
+    const saved = localStorage.getItem(HISTORY_KEY);
 
-}
-
-/* =========================
-WEB SEARCH
-========================= */
-
-async function searchWeb(query){
-
-  try{
-
-    const response =
-      await fetch(
-        "/api/search?q=" +
-        encodeURIComponent(query)
-      );
-
-    const data =
-      await response.json();
-
-    if(
-      !response.ok ||
-      !data.success
-    ){
-
-      console.warn(
-        "Search error:",
-        data.error
-      );
-
-      return [];
-
+    if (saved) {
+      messages = JSON.parse(saved);
     }
 
-    return Array.isArray(data.results)
-      ? data.results
-      : [];
-
-  }catch(error){
-
-    console.error(
-      "Web search error:",
-      error
-    );
-
-    return [];
-
+  } catch(e) {
+    messages = [];
   }
 
+  renderMessages();
 }
 
-/* =========================
-SEND
-========================= */
+function saveHistory() {
+  localStorage.setItem(HISTORY_KEY, JSON.stringify(messages.slice(-50)));
+}
 
-async function sendMessage(
-  forcedText=null
-){
+function renderMessages() {
 
-  const text =
-    String(
-      forcedText !== null
-        ? forcedText
-        : input.value
-    ).trim();
+  chat.innerHTML = "";
 
-  if(!text) return;
-
-  input.value = "";
-  input.style.height =
-    "auto";
-
-  welcome.style.display =
-    "none";
-
-  let webResults = [];
-
-  if(webSearchEnabled){
-
-    status.textContent =
-      "🌐 در حال جستجوی اینترنت...";
-
-    webResults =
-      await searchWeb(text);
-
+  if (!messages.length) {
+    showWelcome();
+    return;
   }
 
-  messages.push({
+  messages.forEach((m, index) => {
 
-    role:"user",
+    if (m.role !== "user" && m.role !== "assistant") return;
 
-    content:text,
+    const row = document.createElement("div");
 
-    webResults:webResults
+    row.className =
+      "message " + (m.role === "user" ? "user" : "ai");
+
+    const bubble = document.createElement("div");
+    bubble.className = "bubble";
+
+    bubble.textContent = m.content;
+
+    row.appendChild(bubble);
+    chat.appendChild(row);
+
+    if (
+      m.role === "assistant" &&
+      m.sources &&
+      m.sources.length
+    ) {
+      renderSources(m.sources);
+    }
+
+    if (m.role === "assistant") {
+
+      const copy = document.createElement("button");
+
+      copy.className = "copy";
+      copy.textContent = "📋 کپی";
+
+      copy.onclick = () => {
+        navigator.clipboard.writeText(m.content);
+        copy.textContent = "✅ کپی شد";
+      };
+
+      bubble.appendChild(copy);
+    }
 
   });
 
-  addMessage(
-    "user",
-    text
-  );
+  scrollBottom();
+}
 
+function renderSources(sources) {
+
+  const box = document.createElement("div");
+
+  box.className = "sources";
+
+  box.innerHTML = `
+    <div class="sources-title">
+      🌐 منابع اینترنتی
+    </div>
+  `;
+
+  sources.slice(0, 8).forEach(source => {
+
+    const a = document.createElement("a");
+
+    a.className = "source";
+    a.href = source.url;
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+
+    a.innerHTML = `
+      ${escapeHtml(source.title || "منبع")}
+      <small>
+        ${escapeHtml(source.snippet || "")}
+      </small>
+    `;
+
+    box.appendChild(a);
+
+  });
+
+  chat.appendChild(box);
+}
+
+function scrollBottom() {
+  setTimeout(() => {
+    chat.scrollTop = chat.scrollHeight;
+  }, 50);
+}
+
+function useSuggestion(text) {
+  input.value = text;
+  sendMessage();
+}
+
+function toggleWeb() {
+
+  webSearch = !webSearch;
+
+  if (webSearch) {
+
+    webToggle.classList.remove("off");
+
+    webToggle.textContent =
+      "🌐 جستجوی اینترنت: فعال";
+
+  } else {
+
+    webToggle.classList.add("off");
+
+    webToggle.textContent =
+      "🌐 جستجوی اینترنت: خاموش";
+  }
+}
+
+function setStatus(text) {
+  statusEl.textContent = text;
+}
+
+async function searchInternet(query) {
+
+  try {
+
+    const response = await fetch(
+      API_SEARCH + "?q=" + encodeURIComponent(query),
+      {
+        method: "GET",
+        cache: "no-store"
+      }
+    );
+
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      throw new Error(data.error || "Search failed");
+    }
+
+    return data.results || [];
+
+  } catch(error) {
+
+    console.error("SEARCH ERROR:", error);
+
+    return [];
+  }
+}
+
+async function sendMessage() {
+
+  const text = input.value.trim();
+
+  if (!text) return;
+
+  input.value = "";
+
+  messages.push({
+    role: "user",
+    content: text
+  });
+
+  renderMessages();
   saveHistory();
 
-  showTyping();
+  setStatus(
+    webSearch
+      ? "🌐 در حال جستجوی اینترنت..."
+      : "🤖 در حال فکر کردن..."
+  );
 
-  sendBtn.disabled =
-    true;
+  let sources = [];
+  let webContext = "";
 
-  try{
+  if (webSearch) {
 
-    let webContext = "";
+    sources = await searchInternet(text);
 
-    if(webResults.length){
+    if (sources.length) {
 
-      webContext =
-        webResults
-          .map(
-            (r,i) =>
-              `[${i+1}] ${r.title}\n` +
-              `URL: ${r.url}\n` +
-              `متن: ${r.snippet}`
-          )
-          .join("\n\n");
+      webContext = sources.map((item, index) => {
 
-    }
+        return `
+منبع ${index + 1}
+عنوان: ${item.title}
+آدرس: ${item.url}
+خلاصه: ${item.snippet}
+`;
 
-    const response =
-      await fetch(
-        "/api/chat",
-        {
+      }).join("\n");
 
-          method:"POST",
+      setStatus("🤖 اطلاعات پیدا شد؛ در حال ساخت پاسخ...");
 
-          headers:{
-            "Content-Type":
-              "application/json"
-          },
+    } else {
 
-          body:JSON.stringify({
-
-            messages:
-              messages.slice(-20),
-
-            language:
-              selectedLanguage,
-
-            webContext
-
-          })
-
-        }
+      setStatus(
+        "⚠️ نتیجه اینترنت پیدا نشد؛ در حال پاسخ‌گویی..."
       );
+    }
+  }
 
-    const data =
-      await response.json();
+  try {
 
-    if(
-      !response.ok ||
-      !data.success
-    ){
+    const response = await fetch(API_CHAT, {
+
+      method: "POST",
+
+      headers: {
+        "Content-Type": "application/json"
+      },
+
+      body: JSON.stringify({
+
+        messages: messages.slice(-20),
+
+        language: selectedLanguage,
+
+        webContext: webContext
+
+      })
+
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
 
       throw new Error(
-        data.error ||
-        "خطا در دریافت پاسخ"
+        data.error || "خطا در ارتباط با سرور"
       );
-
-    }
-
-    const reply =
-      String(data.reply || "").trim();
-
-    if(!reply){
-
-      throw new Error(
-        "پاسخ خالی دریافت شد"
-      );
-
     }
 
     messages.push({
 
-      role:"assistant",
+      role: "assistant",
 
-      content:reply,
+      content: data.reply,
 
-      webResults
+      sources: sources
 
     });
 
-    addMessage(
-      "assistant",
-      reply,
-      true,
-      webResults
-    );
-
     saveHistory();
+    renderMessages();
 
-    status.textContent =
-      webResults.length
-        ? "🌐 پاسخ بر اساس جستجوی اینترنتی"
-        : "AfghanAI آماده است";
+    setStatus("AfghanAI آماده است");
 
-  }catch(error){
+  } catch(error) {
 
     console.error(error);
 
-    addMessage(
-      "assistant",
-      "❌ " +
-      (
-        error.message ||
-        "خطا در ارتباط با سرور"
-      )
-    );
+    messages.push({
 
-    status.textContent =
-      "خطا";
+      role: "assistant",
 
-  }finally{
+      content:
+        "❌ خطا در ارتباط با سرور.\n\n" +
+        error.message
 
-    hideTyping();
+    });
 
-    sendBtn.disabled =
-      false;
+    saveHistory();
+    renderMessages();
 
-    input.focus();
+    setStatus("خطا");
 
   }
-
 }
 
-/* =========================
-SEND BUTTON
-========================= */
+function clearHistory() {
 
-sendBtn.onclick =
-  () => sendMessage();
-
-/* =========================
-ENTER
-========================= */
-
-input.addEventListener(
-  "keydown",
-  event => {
-
-    if(
-      event.key === "Enter" &&
-      !event.shiftKey
-    ){
-
-      event.preventDefault();
-
-      sendMessage();
-
-    }
-
-  }
-);
-
-/* =========================
-AUTO RESIZE
-========================= */
-
-input.addEventListener(
-  "input",
-  () => {
-
-    input.style.height =
-      "auto";
-
-    input.style.height =
-      Math.min(
-        input.scrollHeight,
-        130
-      ) + "px";
-
-  }
-);
-
-/* =========================
-WEB TOGGLE
-========================= */
-
-webToggle.onclick =
-  () => {
-
-    webSearchEnabled =
-      !webSearchEnabled;
-
-    webToggle.classList.toggle(
-      "active",
-      webSearchEnabled
-    );
-
-    webToggle.textContent =
-      webSearchEnabled
-        ? "🌐 جستجوی اینترنت"
-        : "🔴 جستجو خاموش";
-
-  };
-
-/* =========================
-CLEAR
-========================= */
-
-clearBtn.onclick =
-  () => {
-
-    if(
-      !confirm(
-        "تمام تاریخچه پاک شود؟"
-      )
-    ) return;
-
-    messages = [];
-
-    localStorage.removeItem(
-      HISTORY_KEY
-    );
-
-    document
-      .querySelectorAll(
-        ".message"
-      )
-      .forEach(el => el.remove());
-
-    welcome.style.display =
-      "block";
-
-    status.textContent =
-      "AfghanAI آماده است";
-
-  };
-
-/* =========================
-LANGUAGE
-========================= */
-
-language.onchange =
-  () => {
-
-    selectedLanguage =
-      language.value;
-
-    localStorage.setItem(
-      LANGUAGE_KEY,
-      selectedLanguage
-    );
-
-    applyLanguage();
-
-  };
-
-/* =========================
-SUGGESTIONS
-========================= */
-
-document
-  .querySelectorAll(".suggestion")
-  .forEach(button => {
-
-    button.onclick =
-      () => {
-
-        sendMessage(
-          button.dataset.text
-        );
-
-      };
-
-  });
-
-/* =========================
-MIC
-========================= */
-
-function getVoiceLanguage(){
-
-  const map = {
-
-    fa:"fa-AF",
-    en:"en-US",
-    fr:"fr-FR",
-    ar:"ar-SA",
-    de:"de-DE",
-    tr:"tr-TR",
-    ru:"ru-RU",
-    es:"es-ES",
-    zh:"zh-CN",
-    ja:"ja-JP",
-    ko:"ko-KR",
-    hi:"hi-IN"
-
-  };
-
-  if(
-    selectedLanguage !== "auto" &&
-    map[selectedLanguage]
-  ){
-
-    return map[selectedLanguage];
-
+  if (!confirm("آیا می‌خواهید تاریخچه گفتگو پاک شود؟")) {
+    return;
   }
 
-  return navigator.language ||
-    "fa-AF";
+  messages = [];
 
+  localStorage.removeItem(HISTORY_KEY);
+
+  renderMessages();
+
+  setStatus("تاریخچه پاک شد");
 }
 
-function setupMic(){
+input.addEventListener("keydown", function(e) {
 
-  const SR =
+  if (e.key === "Enter" && !e.shiftKey) {
+
+    e.preventDefault();
+
+    sendMessage();
+  }
+
+});
+
+input.addEventListener("input", function() {
+
+  this.style.height = "auto";
+
+  this.style.height =
+    Math.min(this.scrollHeight, 120) + "px";
+
+});
+
+function startVoice() {
+
+  const SpeechRecognition =
     window.SpeechRecognition ||
     window.webkitSpeechRecognition;
 
-  if(!SR){
+  if (!SpeechRecognition) {
 
-    micBtn.onclick =
-      () => alert(
-        "مرورگر شما از تشخیص صدا پشتیبانی نمی‌کند."
-      );
+    alert(
+      "مرورگر شما از تشخیص صدا پشتیبانی نمی‌کند."
+    );
 
     return;
-
   }
 
-  recognition =
-    new SR();
+  const recognition = new SpeechRecognition();
 
-  recognition.continuous =
-    false;
+  recognition.lang =
+    selectedLanguage === "en"
+      ? "en-US"
+      : selectedLanguage === "fr"
+      ? "fr-FR"
+      : selectedLanguage === "ar"
+      ? "ar-SA"
+      : "fa-AF";
 
-  recognition.interimResults =
-    false;
+  recognition.interimResults = false;
+  recognition.continuous = false;
 
-  recognition.maxAlternatives =
-    1;
+  setStatus("🎤 در حال شنیدن...");
 
-  recognition.onstart =
-    () => {
+  recognition.onresult = function(event) {
 
-      isRecording = true;
+    input.value =
+      event.results[0][0].transcript;
 
-      micBtn.classList.add(
-        "recording"
-      );
+    input.dispatchEvent(new Event("input"));
 
-      micBtn.textContent =
-        "⏹️";
+    setStatus("آماده ارسال");
 
-      status.textContent =
-        "🎙️ در حال شنیدن...";
+  };
 
-    };
+  recognition.onerror = function(event) {
 
-  recognition.onresult =
-    event => {
+    console.error(event);
 
-      const transcript =
-        event.results[0][0]
-          .transcript;
+    setStatus("خطا در تشخیص صدا");
+  };
 
-      input.value =
-        transcript;
+  recognition.onend = function() {
 
-      input.dispatchEvent(
-        new Event("input")
-      );
+    if (statusEl.textContent === "🎤 در حال شنیدن...") {
+      setStatus("AfghanAI آماده است");
+    }
 
-    };
+  };
 
-  recognition.onerror =
-    error => {
-
-      console.error(
-        "Mic error:",
-        error
-      );
-
-      status.textContent =
-        "خطا در میکروفون";
-
-    };
-
-  recognition.onend =
-    () => {
-
-      isRecording =
-        false;
-
-      micBtn.classList.remove(
-        "recording"
-      );
-
-      micBtn.textContent =
-        "🎙️";
-
-    };
-
-  micBtn.onclick =
-    () => {
-
-      recognition.lang =
-        getVoiceLanguage();
-
-      if(isRecording){
-
-        recognition.stop();
-
-      }else{
-
-        try{
-
-          recognition.start();
-
-        }catch(error){
-
-          console.error(error);
-
-        }
-
-      }
-
-    };
-
+  recognition.start();
 }
 
-setupMic();
+loadHistory();
 
 </script>
 
