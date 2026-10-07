@@ -1,143 +1,96 @@
-const MODEL = "openai/gpt-5.6-luna";
-
-const SYSTEM_PROMPT = `
-تو Yazdan AI هستی، یک دستیار هوش مصنوعی فارسی‌زبان.
-
-قوانین:
-- به فارسی واضح و دوستانه پاسخ بده.
-- اگر کاربر به دری یا فارسی افغانستانی صحبت کرد، همان سبک را حفظ کن.
-- پاسخ‌ها را تا حد امکان دقیق و کاربردی بده.
-- اگر چیزی را نمی‌دانی، حدس نزن و واضح بگو.
-- در مسائل مالی، پزشکی و حقوقی ادعای قطعیت نکن.
-- به کاربر برای ساخت پروژه‌های نرم‌افزاری کمک کن.
-`;
-
 export default async function handler(req, res) {
-
-  // فقط POST
   if (req.method !== "POST") {
     return res.status(405).json({
       success: false,
-      error: "Method Not Allowed"
+      error: "Only POST is allowed"
     });
   }
 
   try {
-
-    const apiKey = process.env.AI_GATEWAY_API_KEY;
+    const apiKey = process.env.GROQ_API_KEY;
 
     if (!apiKey) {
       return res.status(500).json({
         success: false,
-        error: "AI_GATEWAY_API_KEY در Vercel تنظیم نشده است."
+        error: "GROQ_API_KEY is not configured in Vercel"
       });
     }
 
-    const body = req.body || {};
+    const { messages } = req.body || {};
 
-    let messages = Array.isArray(body.messages)
-      ? body.messages
-      : [];
-
-    // جلوگیری از ارسال حجم بسیار زیاد
-    messages = messages.slice(-20);
-
-    const cleanMessages = messages
-      .filter(item =>
-        item &&
-        (item.role === "user" || item.role === "assistant") &&
-        typeof item.content === "string"
-      )
-      .map(item => ({
-        role: item.role,
-        content: item.content.slice(0, 12000)
-      }));
-
-    if (cleanMessages.length === 0) {
+    if (!Array.isArray(messages)) {
       return res.status(400).json({
         success: false,
-        error: "پیام خالی است."
+        error: "messages must be an array"
       });
     }
 
-    const gatewayResponse = await fetch(
-      "https://ai-gateway.vercel.sh/v1/chat/completions",
+    const safeMessages = messages
+      .slice(-20)
+      .map((m) => ({
+        role:
+          m.role === "assistant"
+            ? "assistant"
+            : m.role === "system"
+            ? "system"
+            : "user",
+        content: String(m.content || "").slice(0, 8000)
+      }));
+
+    const systemMessage = {
+      role: "system",
+      content: `
+تو Yazdan AI هستی؛ یک دستیار هوش مصنوعی فارسی و دری.
+پاسخ‌ها را واضح، کوتاه و کاربردی بده.
+اگر کاربر درباره برنامه‌نویسی، GitHub، Vercel، پروژه‌هایش یا مسائل عمومی سؤال کرد، مرحله‌به‌مرحله راهنمایی کن.
+اگر چیزی را نمی‌دانی، حدس نزن و صادقانه بگو.
+`
+    };
+
+    const response = await fetch(
+      "https://api.groq.com/openai/v1/chat/completions",
       {
         method: "POST",
-
         headers: {
-          "Authorization": `Bearer ${apiKey}`,
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${apiKey}`
         },
-
         body: JSON.stringify({
-          model: MODEL,
-
-          messages: [
-            {
-              role: "system",
-              content: SYSTEM_PROMPT
-            },
-            ...cleanMessages
-          ],
-
+          model: "openai/gpt-oss-120b",
+          messages: [systemMessage, ...safeMessages],
           temperature: 0.7,
-
-          max_tokens: 2000
+          max_completion_tokens: 2000
         })
       }
     );
 
-    const rawText = await gatewayResponse.text();
+    const data = await response.json();
 
-    let data;
-
-    try {
-      data = JSON.parse(rawText);
-    } catch {
-      data = {
-        error: rawText
-      };
-    }
-
-    if (!gatewayResponse.ok) {
-
-      console.error("AI Gateway Error:", data);
-
-      return res.status(502).json({
+    if (!response.ok) {
+      return res.status(response.status).json({
         success: false,
-        error:
-          data?.error?.message ||
-          data?.error ||
-          "خطا از طرف AI Gateway"
+        error: data?.error?.message || "Groq API error"
       });
     }
 
-    const reply =
-      data?.choices?.[0]?.message?.content;
+    const reply = data?.choices?.[0]?.message?.content;
 
     if (!reply) {
-
-      console.error("Invalid AI response:", data);
-
-      return res.status(502).json({
+      return res.status(500).json({
         success: false,
-        error: "پاسخ معتبر از هوش مصنوعی دریافت نشد."
+        error: "AI did not return a response"
       });
     }
 
     return res.status(200).json({
       success: true,
-      reply: reply
+      reply
     });
 
   } catch (error) {
-
-    console.error("Server Error:", error);
-
     return res.status(500).json({
       success: false,
-      error: "خطای داخلی سرور."
+      error: error.message || "Server error"
     });
   }
 }
