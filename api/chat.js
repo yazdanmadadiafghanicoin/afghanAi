@@ -1,6 +1,7 @@
 export default async function handler(req, res) {
 
   if (req.method !== "POST") {
+
     return res.status(405).json({
       success: false,
       error: "Only POST is allowed"
@@ -9,236 +10,189 @@ export default async function handler(req, res) {
 
   try {
 
-    const apiKey =
-      process.env.GROQ_API_KEY;
+    const apiKey = process.env.GROQ_API_KEY;
 
     if (!apiKey) {
+
       return res.status(500).json({
         success: false,
-        error:
-          "GROQ_API_KEY is not configured in Vercel"
+        error: "GROQ_API_KEY is not configured in Vercel"
       });
     }
 
     const {
-      messages,
+      messages = [],
       language = "auto",
       webContext = ""
     } = req.body || {};
 
-    if (!Array.isArray(messages)) {
+    if (!Array.isArray(messages) || messages.length === 0) {
+
       return res.status(400).json({
         success: false,
-        error:
-          "messages must be an array"
+        error: "Messages are required"
       });
     }
 
     const languageInstructions = {
 
-      auto: `
-به زبان کاربر پاسخ بده.
-اگر فارسی یا دری پرسید، فارسی/دری جواب بده.
-اگر انگلیسی پرسید، انگلیسی جواب بده.
-زبان کاربر را تشخیص بده.
-`,
+      fa:
+        "پاسخ را به فارسی افغانستانی/دری روان و طبیعی بده.",
 
-      fa: `
-فقط به فارسی/دری پاسخ بده.
-`,
+      en:
+        "Answer in clear natural English.",
 
-      en: `
-Only answer in English.
-`,
+      fr:
+        "Réponds en français naturel et clair.",
 
-      fr: `
-Réponds uniquement en français.
-`,
+      ar:
+        "أجب باللغة العربية بشكل واضح وطبيعي.",
 
-      ar: `
-أجب باللغة العربية فقط.
-`,
+      de:
+        "Antworte auf natürlichem und klarem Deutsch.",
 
-      de: `
-Antworte nur auf Deutsch.
-`,
+      tr:
+        "Doğal ve anlaşılır Türkçe cevap ver.",
 
-      tr: `
-Yalnızca Türkçe cevap ver.
-`,
+      ru:
+        "Отвечай на русском языке ясно и естественно.",
 
-      ru: `
-Отвечай только на русском языке.
-`,
+      es:
+        "Responde en español claro y natural.",
 
-      es: `
-Responde únicamente en español.
-`,
+      zh:
+        "请使用清晰自然的中文回答。",
 
-      zh: `
-请只用中文回答。
-`,
+      ja:
+        "自然で分かりやすい日本語で回答してください。",
 
-      ja: `
-日本語だけで答えてください。
-`,
+      ko:
+        "자연스럽고 이해하기 쉬운 한국어로 답변하세요.",
 
-      ko: `
-한국어로만 답변하세요.
-`,
-
-      hi: `
-केवल हिंदी में उत्तर दें。
-`
-
+      hi:
+        "स्पष्ट और स्वाभाविक हिंदी में उत्तर दें."
     };
 
-    const languageInstruction =
-      languageInstructions[language] ||
-      languageInstructions.auto;
+    let languageRule = "";
 
-    let webInstruction = "";
+    if (
+      language !== "auto" &&
+      languageInstructions[language]
+    ) {
 
-    if (webContext) {
+      languageRule = languageInstructions[language];
 
-      webInstruction = `
+    } else {
+
+      languageRule =
+        "به زبان کاربر پاسخ بده. اگر کاربر فارسی یا دری نوشت، فارسی/دری پاسخ بده.";
+    }
+
+    let webRule = "";
+
+    if (webContext && webContext.trim()) {
+
+      webRule = `
 
 مهم:
-نتایج زیر از جستجوی اینترنتی آمده‌اند.
-
-اگر سؤال کاربر مربوط به اطلاعات جدید،
-قیمت، اخبار، رویدادها یا اطلاعات فعلی است،
-از این نتایج برای پاسخ استفاده کن.
-
-اطلاعاتی که در نتایج نیست را به عنوان
-اطلاعات جستجو شده ادعا نکن.
-
-اگر منابع کافی نیستند، صادقانه بگو.
-
-نتایج اینترنت:
+نتایج زیر از جستجوی اینترنت دریافت شده‌اند.
 
 ${webContext}
 
+برای سؤال‌های مربوط به قیمت، خبر، رویداد، اطلاعات جدید و موضوعات روز،
+از این نتایج به عنوان منبع استفاده کن.
+
+اطلاعاتی را که در نتایج وجود ندارد به عنوان واقعیت قطعی ادعا نکن.
+
+اگر سؤال درباره قیمت لحظه‌ای است، زمان‌دار بودن اطلاعات را در نظر بگیر.
+
+اگر نتایج کافی نیستند، صادقانه بگو که اطلاعات جستجو کافی نیست.
 `;
 
+    } else {
+
+      webRule = `
+
+در این درخواست نتیجه جستجوی اینترنت در اختیار تو نیست.
+اگر کاربر درباره اطلاعات لحظه‌ای سؤال کرد، ادعای دسترسی لحظه‌ای نکن.
+`;
     }
 
-    const systemMessage = {
+    const systemPrompt = `
+تو AfghanAI هستی؛ یک دستیار هوش مصنوعی مفید، دقیق و صادق.
 
-      role: "system",
+${languageRule}
 
-      content: `
+پاسخ‌ها را واضح و کاربردی بده.
 
-تو AfghanAI هستی؛ یک دستیار هوش مصنوعی شخصی.
+از ادعای اطلاعاتی که نداری خودداری کن.
 
-وظایف:
-- پاسخ به سوالات عمومی
-- برنامه‌نویسی
-- GitHub
-- Vercel
-- ساخت سایت و اپلیکیشن
-- آموزش مرحله‌به‌مرحله
-- پروژه‌های کاربر
-- تحلیل اطلاعات اینترنتی
+اگر کاربر درباره برنامه‌نویسی سؤال کرد، راه‌حل عملی ارائه بده.
 
-قوانین:
-- حدس را به عنوان واقعیت بیان نکن.
-- اگر مطمئن نیستی بگو.
-- پاسخ‌ها واضح و کاربردی باشند.
-- اگر کاربر کد کامل خواست، کد کامل بده.
-- برای اطلاعات جدید، نتایج جستجوی وب را در نظر بگیر.
+اگر سؤال ساده است، پاسخ را بی‌جهت طولانی نکن.
 
-زبان:
-${languageInstruction}
+${webRule}
+`;
 
-${webInstruction}
+    const safeMessages = messages
+      .slice(-20)
+      .map(message => ({
+        role:
+          message.role === "assistant"
+            ? "assistant"
+            : "user",
+        content: String(message.content || "")
+      }));
 
-`
+    const groqResponse = await fetch(
+      "https://api.groq.com/openai/v1/chat/completions",
+      {
 
-    };
+        method: "POST",
 
-    const safeMessages =
-      messages
-        .slice(-20)
-        .map(message => {
+        headers: {
+          "Authorization": `Bearer ${apiKey}`,
+          "Content-Type": "application/json"
+        },
 
-          let role = "user";
+        body: JSON.stringify({
 
-          if (
-            message.role === "assistant"
-          ) {
-            role = "assistant";
-          }
+          model: "openai/gpt-oss-120b",
 
-          return {
-            role,
-            content:
-              String(
-                message.content || ""
-              ).slice(0, 8000)
-          };
+          messages: [
+            {
+              role: "system",
+              content: systemPrompt
+            },
+            ...safeMessages
+          ],
 
-        });
+          temperature: 0.7,
 
-    const response =
-      await fetch(
-        "https://api.groq.com/openai/v1/chat/completions",
-        {
+          max_completion_tokens: 2500
 
-          method: "POST",
+        })
+      }
+    );
 
-          headers: {
-            "Content-Type":
-              "application/json",
+    const data = await groqResponse.json();
 
-            "Authorization":
-              `Bearer ${apiKey}`
-          },
+    if (!groqResponse.ok) {
 
-          body: JSON.stringify({
+      console.error("GROQ ERROR:", data);
 
-            model:
-              "openai/gpt-oss-120b",
-
-            messages: [
-              systemMessage,
-              ...safeMessages
-            ],
-
-            temperature: 0.7,
-
-            max_completion_tokens:
-              2500
-
-          })
-
-        }
-      );
-
-    const data =
-      await response.json();
-
-    if (!response.ok) {
-
-      return res.status(
-        response.status
-      ).json({
+      return res.status(groqResponse.status).json({
 
         success: false,
 
         error:
           data?.error?.message ||
           "Groq API error"
-
       });
-
     }
 
     const reply =
-      data
-        ?.choices?.[0]
-        ?.message
-        ?.content;
+      data?.choices?.[0]?.message?.content;
 
     if (!reply) {
 
@@ -246,29 +200,26 @@ ${webInstruction}
 
         success: false,
 
-        error:
-          "AI did not return a response"
-
+        error: "AI returned an empty response"
       });
-
     }
 
     return res.status(200).json({
 
       success: true,
 
-      reply: String(reply),
+      reply: reply,
 
-      language
+      language: language,
+
+      webUsed:
+        Boolean(webContext && webContext.trim())
 
     });
 
-  } catch (error) {
+  } catch(error) {
 
-    console.error(
-      "CHAT ERROR:",
-      error
-    );
+    console.error("CHAT ERROR:", error);
 
     return res.status(500).json({
 
@@ -276,10 +227,8 @@ ${webInstruction}
 
       error:
         error?.message ||
-        "Server error"
+        "Internal server error"
 
     });
-
   }
-
 }
