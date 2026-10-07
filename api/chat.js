@@ -1,9 +1,5 @@
 export default async function handler(req, res) {
 
-  /* =====================================================
-     METHOD
-  ===================================================== */
-
   if (req.method !== "POST") {
 
     return res.status(405).json({
@@ -13,16 +9,10 @@ export default async function handler(req, res) {
 
   }
 
-
   try {
-
-    /* =====================================================
-       API KEY
-    ===================================================== */
 
     const apiKey =
       process.env.GROQ_API_KEY;
-
 
     if (!apiKey) {
 
@@ -34,22 +24,14 @@ export default async function handler(req, res) {
 
     }
 
-
-    /* =====================================================
-       REQUEST
-    ===================================================== */
-
     const body =
       req.body || {};
-
 
     const messages =
       body.messages;
 
-
-    const selectedLanguage =
+    const language =
       body.language || "auto";
-
 
     if (!Array.isArray(messages)) {
 
@@ -61,179 +43,99 @@ export default async function handler(req, res) {
 
     }
 
-
-    /* =====================================================
-       LANGUAGE SETTINGS
-    ===================================================== */
-
     const languageInstructions = {
 
-      fa: `
-زبان پاسخ: فارسی / دری.
+      auto: `
+به زبان خود کاربر پاسخ بده.
+اگر کاربر فارسی یا دری نوشت، به فارسی/دری پاسخ بده.
+اگر انگلیسی نوشت، انگلیسی پاسخ بده.
+زبان کاربر را خودت تشخیص بده.
+`,
 
-همیشه به فارسی/دری پاسخ بده.
-از کلمات و ساختار طبیعی دری استفاده کن.
-اگر کاربر درباره افغانستان صحبت می‌کند،
-تا حد امکان اصطلاحات رایج افغانستان را استفاده کن.
+      fa: `
+فقط به فارسی/دری پاسخ بده.
+از زبان واضح و طبیعی افغانستان استفاده کن.
 `,
 
       en: `
-Response language: English.
-
-Always answer in clear, natural English.
+Answer only in English.
 `,
 
       fr: `
-Langue de réponse : français.
-
-Réponds toujours en français clair et naturel.
+Réponds uniquement en français.
 `,
 
       ar: `
-لغة الإجابة: العربية.
-
-أجب دائماً باللغة العربية الواضحة والطبيعية.
+أجب باللغة العربية فقط.
 `,
 
       de: `
-Antwortsprache: Deutsch.
-
-Antworte immer auf klarem und natürlichem Deutsch.
+Antworte ausschließlich auf Deutsch.
 `,
 
       tr: `
-Yanıt dili: Türkçe.
-
-Her zaman açık ve doğal Türkçe cevap ver.
+Yalnızca Türkçe cevap ver.
 `,
 
       ru: `
-Язык ответа: русский.
-
-Всегда отвечай на понятном и естественном русском языке.
+Отвечай только на русском языке.
 `,
 
       es: `
-Idioma de respuesta: español.
-
-Responde siempre en español claro y natural.
+Responde únicamente en español.
 `,
 
       zh: `
-回复语言：中文。
-
-始终使用清晰、自然的中文回答。
+请只用中文回答。
 `,
 
       ja: `
-回答言語：日本語。
-
-常に自然で分かりやすい日本語で回答してください。
+日本語だけで答えてください。
 `,
 
       ko: `
-응답 언어: 한국어.
-
-항상 자연스럽고 이해하기 쉬운 한국어로 답변하세요.
+한국어로만 답변하세요.
 `,
 
       hi: `
-उत्तर की भाषा: हिन्दी।
-
-हमेशा स्पष्ट और स्वाभाविक हिन्दी में उत्तर दें।
+केवल हिंदी में उत्तर दें।
 `
 
     };
 
-
-    let languageInstruction = "";
-
-
-    if (
-      selectedLanguage !== "auto" &&
-      languageInstructions[selectedLanguage]
-    ) {
-
-      languageInstruction =
-        languageInstructions[
-          selectedLanguage
-        ];
-
-    } else {
-
-      languageInstruction = `
-زبان پاسخ را از آخرین پیام کاربر تشخیص بده.
-
-اگر کاربر فارسی یا دری صحبت می‌کند،
-به فارسی/دری پاسخ بده.
-
-اگر انگلیسی صحبت می‌کند،
-به انگلیسی پاسخ بده.
-
-اگر فرانسوی صحبت می‌کند،
-به فرانسوی پاسخ بده.
-
-به طور کلی همیشه به همان زبانی که کاربر استفاده کرده
-پاسخ بده.
-`;
-
-    }
-
-
-    /* =====================================================
-       SYSTEM PROMPT
-    ===================================================== */
+    const languageInstruction =
+      languageInstructions[language] ||
+      languageInstructions.auto;
 
     const systemMessage = {
 
       role: "system",
 
       content: `
+تو AfghanAI هستی؛ یک دستیار هوش مصنوعی شخصی.
 
-تو AfghanAI هستی؛
-یک دستیار هوش مصنوعی چندزبانه.
+وظایف تو:
+- پاسخ‌گویی به سوالات عمومی
+- کمک به برنامه‌نویسی
+- کمک به GitHub
+- کمک به Vercel
+- کمک به ساخت وب‌سایت و اپلیکیشن
+- آموزش مرحله‌به‌مرحله
+- کمک به پروژه‌های کاربر
+- پاسخ واضح و کاربردی
 
+قوانین:
+- چیزی را که مطمئن نیستی به عنوان واقعیت بیان نکن.
+- اگر اطلاعات کافی نداری، صادقانه بگو.
+- پاسخ‌ها را بیش از حد طولانی نکن مگر اینکه کاربر جزئیات بخواهد.
+- اگر کاربر درخواست کد کامل کرد، کد کامل و قابل استفاده بده.
+- اگر کاربر تازه‌کار است، مراحل را ساده توضیح بده.
+
+زبان:
 ${languageInstruction}
-
-قوانین پاسخ:
-
-1. پاسخ‌ها واضح، دقیق و کاربردی باشند.
-
-2. اگر کاربر درباره برنامه‌نویسی،
-GitHub، Vercel، JavaScript، HTML،
-API یا پروژه‌های نرم‌افزاری سؤال کرد،
-مرحله‌به‌مرحله راهنمایی کن.
-
-3. اگر کاربر کد خواست،
-کد کامل و قابل استفاده ارائه کن.
-
-4. اگر کاربر از تو خواست چیزی را اصلاح کنی،
-نسخه اصلاح‌شده را کامل ارائه کن.
-
-5. اگر چیزی را نمی‌دانی،
-حدس نزن و صادقانه بگو.
-
-6. اطلاعات ساختگی به عنوان واقعیت ارائه نکن.
-
-7. پاسخ را بیش از حد طولانی نکن،
-مگر اینکه کاربر جزئیات بیشتری بخواهد.
-
-8. اگر سؤال کاربر مبهم است،
-بهترین تفسیر منطقی را انجام بده و در صورت نیاز
-یک سؤال کوتاه برای روشن شدن موضوع بپرس.
-
-9. اگر کاربر فارسی افغانستان/دری می‌نویسد،
-پاسخ را طبیعی و قابل فهم برای کاربر افغانستان بنویس.
-
-10. زبان انتخاب‌شده توسط کاربر را رعایت کن.
 `
 
     };
-
-
-    /* =====================================================
-       SAFE MESSAGES
-    ===================================================== */
 
     const safeMessages =
       messages
@@ -242,19 +144,13 @@ API یا پروژه‌های نرم‌افزاری سؤال کرد،
 
           let role = "user";
 
-
           if (
-            message &&
             message.role === "assistant"
           ) {
 
             role = "assistant";
 
-          }
-
-
-          if (
-            message &&
+          } else if (
             message.role === "system"
           ) {
 
@@ -262,24 +158,18 @@ API یا پروژه‌های نرم‌افزاری سؤال کرد،
 
           }
 
-
           return {
 
             role,
 
             content:
               String(
-                message?.content || ""
+                message.content || ""
               ).slice(0, 8000)
 
           };
 
         });
-
-
-    /* =====================================================
-       GROQ REQUEST
-    ===================================================== */
 
     const response =
       await fetch(
@@ -298,39 +188,28 @@ API یا پروژه‌های نرم‌افزاری سؤال کرد،
 
           },
 
-          body:
-            JSON.stringify({
+          body: JSON.stringify({
 
-              model:
-                "openai/gpt-oss-120b",
+            model:
+              "openai/gpt-oss-120b",
 
-              messages: [
+            messages: [
+              systemMessage,
+              ...safeMessages
+            ],
 
-                systemMessage,
+            temperature: 0.7,
 
-                ...safeMessages
+            max_completion_tokens:
+              2500
 
-              ],
-
-              temperature:
-                0.7,
-
-              max_completion_tokens:
-                2500
-
-            })
+          })
 
         }
       );
 
-
-    /* =====================================================
-       RESPONSE
-    ===================================================== */
-
     const data =
       await response.json();
-
 
     if (!response.ok) {
 
@@ -348,12 +227,11 @@ API یا پروژه‌های نرم‌افزاری سؤال کرد،
 
     }
 
-
     const reply =
       data
         ?.choices?.[0]
-        ?.message?.content;
-
+        ?.message
+        ?.content;
 
     if (!reply) {
 
@@ -368,30 +246,22 @@ API یا پروژه‌های نرم‌افزاری سؤال کرد،
 
     }
 
-
-    /* =====================================================
-       SUCCESS
-    ===================================================== */
-
     return res.status(200).json({
 
       success: true,
 
-      reply: reply.trim(),
+      reply: String(reply),
 
-      language:
-        selectedLanguage
+      language
 
     });
-
 
   } catch (error) {
 
     console.error(
-      "AfghanAI API Error:",
+      "CHAT ERROR:",
       error
     );
-
 
     return res.status(500).json({
 
