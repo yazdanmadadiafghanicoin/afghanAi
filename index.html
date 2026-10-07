@@ -1,464 +1,520 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#0b1020">
-  <title>AfghanAI</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="theme-color" content="#07111f">
+<title>AfghanAI</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
+<style>
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
+}
 
-    body {
-      margin: 0;
-      font-family:
-        system-ui,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        Tahoma,
-        Arial,
-        sans-serif;
-      background:
-        radial-gradient(circle at top, #172554 0, #0b1020 42%, #050814 100%);
-      color: #fff;
-      min-height: 100vh;
-    }
+body{
+  margin:0;
+  min-height:100vh;
+  background:
+    radial-gradient(circle at top,#17335e 0,#07111f 42%,#030712 100%);
+  color:#fff;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,
+  "Segoe UI",Tahoma,Arial,sans-serif;
+}
 
-    button,
-    textarea,
-    select {
-      font: inherit;
-    }
+button,textarea,select{
+  font:inherit;
+}
 
-    .app {
-      width: 100%;
-      max-width: 850px;
-      margin: auto;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
+.app{
+  max-width:900px;
+  margin:auto;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
 
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      padding: 14px 14px 12px;
-      background: rgba(5, 8, 20, .86);
-      backdrop-filter: blur(18px);
-      border-bottom: 1px solid rgba(255,255,255,.08);
-    }
+header{
+  position:sticky;
+  top:0;
+  z-index:20;
+  background:rgba(3,7,18,.88);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid rgba(255,255,255,.08);
+  padding:12px;
+}
 
-    .header-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-    }
+.header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
 
-    .logo {
-      width: 44px;
-      height: 44px;
-      border-radius: 15px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(135deg, #2563eb, #7c3aed);
-      box-shadow: 0 8px 30px rgba(37,99,235,.35);
-      font-size: 22px;
-    }
+.logo{
+  width:44px;
+  height:44px;
+  border-radius:15px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:linear-gradient(135deg,#2563eb,#7c3aed);
+  box-shadow:0 8px 30px rgba(37,99,235,.35);
+  font-size:23px;
+}
 
-    .brand-title {
-      font-size: 19px;
-      font-weight: 800;
-    }
+.title{
+  font-size:19px;
+  font-weight:800;
+}
 
-    .brand-sub {
-      color: #94a3b8;
-      font-size: 11px;
-      margin-top: 2px;
-    }
+.subtitle{
+  font-size:11px;
+  color:#94a3b8;
+}
 
-    .header-actions {
-      display: flex;
-      gap: 7px;
-    }
+.actions{
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
 
-    .icon-btn {
-      width: 40px;
-      height: 40px;
-      border: 1px solid rgba(255,255,255,.1);
-      background: rgba(255,255,255,.05);
-      color: #fff;
-      border-radius: 12px;
-      cursor: pointer;
-    }
+select{
+  height:40px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.05);
+  color:#fff;
+  padding:0 7px;
+  outline:none;
+}
 
-    .icon-btn:active {
-      transform: scale(.94);
-    }
+select option{
+  color:#111;
+}
 
-    .language {
-      padding: 0 8px;
-      height: 40px;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,.1);
-      background: rgba(255,255,255,.05);
-      color: white;
-      outline: none;
-    }
+.icon{
+  width:40px;
+  height:40px;
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.05);
+  color:#fff;
+  cursor:pointer;
+}
 
-    .language option {
-      color: #111;
-    }
+.icon.active{
+  background:#2563eb;
+}
 
-    #chat {
-      flex: 1;
-      padding: 18px 14px 145px;
-      overflow-y: auto;
-    }
+#chat{
+  flex:1;
+  padding:20px 13px 155px;
+  overflow-y:auto;
+}
 
-    .welcome {
-      text-align: center;
-      padding: 50px 20px 20px;
-    }
+.welcome{
+  text-align:center;
+  padding:45px 15px 25px;
+}
 
-    .welcome-icon {
-      font-size: 52px;
-      margin-bottom: 12px;
-    }
+.welcome-icon{
+  font-size:55px;
+}
 
-    .welcome h1 {
-      margin: 0 0 8px;
-      font-size: 28px;
-    }
+.welcome h1{
+  margin:10px 0;
+  font-size:27px;
+}
 
-    .welcome p {
-      color: #94a3b8;
-      margin: 0 auto 24px;
-      max-width: 550px;
-      line-height: 1.8;
-    }
+.welcome p{
+  color:#94a3b8;
+  line-height:1.8;
+  max-width:600px;
+  margin:0 auto 25px;
+}
 
-    .suggestions {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 9px;
-      max-width: 600px;
-      margin: auto;
-    }
+.suggestions{
+  max-width:650px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+}
 
-    .suggestion {
-      border: 1px solid rgba(255,255,255,.09);
-      background: rgba(255,255,255,.045);
-      color: #e2e8f0;
-      border-radius: 15px;
-      padding: 13px 10px;
-      cursor: pointer;
-      text-align: right;
-    }
+.suggestion{
+  color:#e2e8f0;
+  background:rgba(255,255,255,.045);
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:15px;
+  padding:13px;
+  cursor:pointer;
+  text-align:right;
+}
 
-    .suggestion:hover {
-      background: rgba(255,255,255,.08);
-    }
+.suggestion:hover{
+  background:rgba(255,255,255,.08);
+}
 
-    .message {
-      display: flex;
-      margin: 13px 0;
-    }
+.message{
+  display:flex;
+  margin:13px 0;
+}
 
-    .message.user {
-      justify-content: flex-start;
-    }
+.message.user{
+  justify-content:flex-start;
+}
 
-    .message.assistant {
-      justify-content: flex-end;
-    }
+.message.assistant{
+  justify-content:flex-end;
+}
 
-    .bubble-wrap {
-      max-width: 88%;
-    }
+.wrap{
+  max-width:90%;
+}
 
-    .bubble {
-      padding: 13px 15px;
-      border-radius: 18px;
-      line-height: 1.85;
-      white-space: pre-wrap;
-      overflow-wrap: anywhere;
-      font-size: 15px;
-    }
+.bubble{
+  padding:13px 15px;
+  border-radius:18px;
+  line-height:1.85;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+  font-size:15px;
+}
 
-    .user .bubble {
-      background: linear-gradient(135deg, #2563eb, #1d4ed8);
-      border-bottom-left-radius: 5px;
-    }
+.user .bubble{
+  background:linear-gradient(135deg,#2563eb,#1d4ed8);
+  border-bottom-left-radius:5px;
+}
 
-    .assistant .bubble {
-      background: rgba(255,255,255,.075);
-      border: 1px solid rgba(255,255,255,.08);
-      border-bottom-right-radius: 5px;
-    }
+.assistant .bubble{
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.08);
+  border-bottom-right-radius:5px;
+}
 
-    .message-actions {
-      display: flex;
-      gap: 5px;
-      margin-top: 6px;
-    }
+.actions-row{
+  display:flex;
+  gap:5px;
+  margin-top:6px;
+  flex-wrap:wrap;
+}
 
-    .assistant .message-actions {
-      justify-content: flex-start;
-    }
+.small{
+  border:0;
+  background:rgba(255,255,255,.06);
+  color:#94a3b8;
+  padding:5px 9px;
+  border-radius:9px;
+  font-size:12px;
+  cursor:pointer;
+}
 
-    .user .message-actions {
-      justify-content: flex-end;
-    }
+.small:hover{
+  color:#fff;
+}
 
-    .small-btn {
-      border: 0;
-      background: rgba(255,255,255,.06);
-      color: #94a3b8;
-      border-radius: 9px;
-      padding: 5px 9px;
-      cursor: pointer;
-      font-size: 12px;
-    }
+.web-results{
+  margin-top:10px;
+  padding:10px;
+  border-radius:14px;
+  background:rgba(37,99,235,.08);
+  border:1px solid rgba(96,165,250,.14);
+}
 
-    .small-btn:hover {
-      color: white;
-      background: rgba(255,255,255,.11);
-    }
+.web-title{
+  font-size:12px;
+  color:#60a5fa;
+  margin-bottom:7px;
+  font-weight:700;
+}
 
-    .typing {
-      display: inline-flex;
-      gap: 4px;
-      align-items: center;
-      padding: 13px 15px;
-      background: rgba(255,255,255,.07);
-      border-radius: 17px;
-    }
+.web-item{
+  padding:8px 0;
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
 
-    .typing span {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: #94a3b8;
-      animation: bounce 1.2s infinite;
-    }
+.web-item:last-child{
+  border-bottom:0;
+}
 
-    .typing span:nth-child(2) {
-      animation-delay: .15s;
-    }
+.web-item a{
+  color:#bfdbfe;
+  text-decoration:none;
+  font-size:13px;
+  font-weight:700;
+}
 
-    .typing span:nth-child(3) {
-      animation-delay: .3s;
-    }
+.web-item p{
+  color:#94a3b8;
+  font-size:11px;
+  line-height:1.6;
+  margin:4px 0 0;
+}
 
-    @keyframes bounce {
-      0%, 60%, 100% {
-        transform: translateY(0);
-      }
-      30% {
-        transform: translateY(-5px);
-      }
-    }
+.typing{
+  display:inline-flex;
+  gap:4px;
+  padding:13px 15px;
+  background:rgba(255,255,255,.07);
+  border-radius:17px;
+}
 
-    .composer {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      z-index: 30;
-      padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
-      background: linear-gradient(
-        to top,
-        rgba(5,8,20,1) 65%,
-        rgba(5,8,20,.82)
-      );
-      backdrop-filter: blur(16px);
-    }
+.typing span{
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:#94a3b8;
+  animation:bounce 1.2s infinite;
+}
 
-    .composer-inner {
-      max-width: 850px;
-      margin: auto;
-      display: flex;
-      align-items: flex-end;
-      gap: 7px;
-      background: rgba(255,255,255,.055);
-      border: 1px solid rgba(255,255,255,.1);
-      border-radius: 18px;
-      padding: 7px;
-    }
+.typing span:nth-child(2){
+  animation-delay:.15s;
+}
 
-    #input {
-      flex: 1;
-      min-height: 42px;
-      max-height: 130px;
-      resize: none;
-      border: 0;
-      outline: none;
-      background: transparent;
-      color: white;
-      padding: 10px;
-      line-height: 1.6;
-    }
+.typing span:nth-child(3){
+  animation-delay:.3s;
+}
 
-    #input::placeholder {
-      color: #64748b;
-    }
+@keyframes bounce{
+  0%,60%,100%{transform:translateY(0)}
+  30%{transform:translateY(-5px)}
+}
 
-    .send-btn,
-    .mic-btn {
-      flex: 0 0 auto;
-      width: 43px;
-      height: 43px;
-      border-radius: 13px;
-      border: 0;
-      color: white;
-      cursor: pointer;
-    }
+.composer{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  z-index:30;
+  padding:10px 12px calc(10px + env(safe-area-inset-bottom));
+  background:linear-gradient(to top,#030712 65%,rgba(3,7,18,.8));
+  backdrop-filter:blur(18px);
+}
 
-    .send-btn {
-      background: linear-gradient(135deg, #2563eb, #7c3aed);
-    }
+.composer-inner{
+  max-width:900px;
+  margin:auto;
+}
 
-    .mic-btn {
-      background: rgba(255,255,255,.08);
-    }
+.search-row{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  margin-bottom:7px;
+}
 
-    .mic-btn.recording {
-      background: #dc2626;
-      animation: pulse 1s infinite;
-    }
+.web-toggle{
+  height:32px;
+  padding:0 11px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.05);
+  color:#94a3b8;
+  cursor:pointer;
+  font-size:12px;
+}
 
-    @keyframes pulse {
-      50% {
-        transform: scale(1.08);
-      }
-    }
+.web-toggle.active{
+  background:#2563eb;
+  color:#fff;
+}
 
-    .status {
-      text-align: center;
-      color: #64748b;
-      font-size: 10px;
-      margin-top: 6px;
-    }
+.search-hint{
+  font-size:10px;
+  color:#64748b;
+}
 
-    .error {
-      color: #fca5a5;
-      background: rgba(127,29,29,.25);
-      border: 1px solid rgba(248,113,113,.2);
-    }
+.input-box{
+  display:flex;
+  align-items:flex-end;
+  gap:7px;
+  background:rgba(255,255,255,.055);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:18px;
+  padding:7px;
+}
 
-    @media(max-width: 480px) {
-      .suggestions {
-        grid-template-columns: 1fr;
-      }
+textarea{
+  flex:1;
+  min-height:43px;
+  max-height:130px;
+  resize:none;
+  border:0;
+  outline:0;
+  background:transparent;
+  color:#fff;
+  padding:10px;
+  line-height:1.6;
+}
 
-      .welcome {
-        padding-top: 35px;
-      }
+textarea::placeholder{
+  color:#64748b;
+}
 
-      .bubble-wrap {
-        max-width: 93%;
-      }
+.send,
+.mic{
+  flex:0 0 auto;
+  width:43px;
+  height:43px;
+  border:0;
+  border-radius:13px;
+  color:#fff;
+  cursor:pointer;
+}
 
-      .brand-title {
-        font-size: 17px;
-      }
-    }
-  </style>
+.send{
+  background:linear-gradient(135deg,#2563eb,#7c3aed);
+}
+
+.mic{
+  background:rgba(255,255,255,.08);
+}
+
+.mic.recording{
+  background:#dc2626;
+}
+
+.status{
+  text-align:center;
+  color:#64748b;
+  font-size:10px;
+  margin-top:6px;
+}
+
+@media(max-width:480px){
+
+  .suggestions{
+    grid-template-columns:1fr;
+  }
+
+  .wrap{
+    max-width:94%;
+  }
+
+  .title{
+    font-size:17px;
+  }
+
+  .search-hint{
+    display:none;
+  }
+}
+</style>
 </head>
 
 <body>
 
 <div class="app">
 
-  <header>
-    <div class="header-row">
+<header>
+  <div class="header">
 
-      <div class="brand">
-        <div class="logo">🤖</div>
-        <div>
-          <div class="brand-title">AfghanAI</div>
-          <div class="brand-sub" id="brandSub">دستیار هوش مصنوعی</div>
+    <div class="brand">
+      <div class="logo">🤖</div>
+
+      <div>
+        <div class="title">AfghanAI</div>
+        <div class="subtitle" id="subtitle">
+          دستیار هوش مصنوعی
         </div>
       </div>
-
-      <div class="header-actions">
-        <select id="language" class="language">
-          <option value="auto">🌐 Auto</option>
-          <option value="fa">🇦🇫 فارسی</option>
-          <option value="en">🇺🇸 English</option>
-          <option value="fr">🇫🇷 Français</option>
-          <option value="ar">🇸🇦 العربية</option>
-          <option value="de">🇩🇪 Deutsch</option>
-          <option value="tr">🇹🇷 Türkçe</option>
-          <option value="ru">🇷🇺 Русский</option>
-          <option value="es">🇪🇸 Español</option>
-          <option value="zh">🇨🇳 中文</option>
-          <option value="ja">🇯🇵 日本語</option>
-          <option value="ko">🇰🇷 한국어</option>
-          <option value="hi">🇮🇳 हिन्दी</option>
-        </select>
-
-        <button class="icon-btn" id="clearBtn" title="پاک کردن">🗑️</button>
-      </div>
-
     </div>
-  </header>
 
-  <main id="chat">
+    <div class="actions">
 
-    <div class="welcome" id="welcome">
+      <select id="language">
+        <option value="auto">🌐 Auto</option>
+        <option value="fa">🇦🇫 فارسی</option>
+        <option value="en">🇺🇸 English</option>
+        <option value="fr">🇫🇷 Français</option>
+        <option value="ar">🇸🇦 العربية</option>
+        <option value="de">🇩🇪 Deutsch</option>
+        <option value="tr">🇹🇷 Türkçe</option>
+        <option value="ru">🇷🇺 Русский</option>
+        <option value="es">🇪🇸 Español</option>
+        <option value="zh">🇨🇳 中文</option>
+        <option value="ja">🇯🇵 日本語</option>
+        <option value="ko">🇰🇷 한국어</option>
+        <option value="hi">🇮🇳 हिन्दी</option>
+      </select>
 
-      <div class="welcome-icon">🧠</div>
-
-      <h1 id="welcomeTitle">سلام! من AfghanAI هستم</h1>
-
-      <p id="welcomeText">
-        دستیار هوش مصنوعی شخصی شما برای برنامه‌نویسی،
-        GitHub، پروژه‌ها و سوالات روزمره.
-      </p>
-
-      <div class="suggestions">
-
-        <button class="suggestion" data-text="چطور یک سایت حرفه‌ای بسازم؟">
-          💻 ساخت سایت
-        </button>
-
-        <button class="suggestion" data-text="چطور در GitHub پروژه بسازم؟">
-          🐙 GitHub
-        </button>
-
-        <button class="suggestion" data-text="برای یادگیری هوش مصنوعی از کجا شروع کنم؟">
-          🧠 یادگیری AI
-        </button>
-
-        <button class="suggestion" data-text="یک برنامه روزانه برای یادگیری برنامه‌نویسی بساز">
-          📅 برنامه روزانه
-        </button>
-
-      </div>
+      <button class="icon" id="clearBtn">🗑️</button>
 
     </div>
 
-  </main>
+  </div>
+</header>
 
-  <div class="composer">
+<main id="chat">
 
-    <div class="composer-inner">
+  <div class="welcome" id="welcome">
 
-      <button class="mic-btn" id="micBtn" title="میکروفون">
+    <div class="welcome-icon">🧠</div>
+
+    <h1 id="welcomeTitle">
+      سلام! من AfghanAI هستم
+    </h1>
+
+    <p id="welcomeText">
+      دستیار هوش مصنوعی شخصی شما با امکان جستجوی اینترنتی.
+    </p>
+
+    <div class="suggestions">
+
+      <button class="suggestion"
+        data-text="آخرین اخبار مهم بازار ارزهای دیجیتال چیست؟">
+        🌐 آخرین اخبار کریپتو
+      </button>
+
+      <button class="suggestion"
+        data-text="امروز قیمت بیت کوین چقدر است؟">
+        ₿ قیمت بیت کوین
+      </button>
+
+      <button class="suggestion"
+        data-text="جدیدترین اخبار فناوری چیست؟">
+        💻 اخبار فناوری
+      </button>
+
+      <button class="suggestion"
+        data-text="چطور یک سایت حرفه‌ای بسازم؟">
+        🛠️ ساخت سایت
+      </button>
+
+    </div>
+
+  </div>
+
+</main>
+
+<div class="composer">
+
+  <div class="composer-inner">
+
+    <div class="search-row">
+
+      <button
+        class="web-toggle active"
+        id="webToggle">
+        🌐 جستجوی اینترنت
+      </button>
+
+      <span class="search-hint">
+        برای سوال‌های جدید و قیمت‌ها روشن باشد
+      </span>
+
+    </div>
+
+    <div class="input-box">
+
+      <button class="mic" id="micBtn">
         🎙️
       </button>
 
@@ -468,7 +524,7 @@
         placeholder="پیام خود را بنویسید..."
       ></textarea>
 
-      <button class="send-btn" id="sendBtn" title="ارسال">
+      <button class="send" id="sendBtn">
         ➤
       </button>
 
@@ -482,204 +538,176 @@
 
 </div>
 
+</div>
+
 <script>
 "use strict";
 
-/* =========================================================
-   STORAGE
-========================================================= */
-
-const HISTORY_KEY = "afghanai_history_v5";
-const LANGUAGE_KEY = "afghanai_language_v5";
+const HISTORY_KEY = "afghanai_history_v6";
+const LANGUAGE_KEY = "afghanai_language_v6";
 
 let messages = [];
 let selectedLanguage =
   localStorage.getItem(LANGUAGE_KEY) || "auto";
 
-let currentAudio = null;
-let currentSpeakingButton = null;
+let webSearchEnabled = true;
+
 let recognition = null;
 let isRecording = false;
 
-/* =========================================================
-   ELEMENTS
-========================================================= */
+const chat =
+  document.getElementById("chat");
 
-const chat = document.getElementById("chat");
-const input = document.getElementById("input");
-const sendBtn = document.getElementById("sendBtn");
-const micBtn = document.getElementById("micBtn");
-const clearBtn = document.getElementById("clearBtn");
-const languageSelect = document.getElementById("language");
-const statusEl = document.getElementById("status");
-const welcome = document.getElementById("welcome");
+const input =
+  document.getElementById("input");
 
-languageSelect.value = selectedLanguage;
+const sendBtn =
+  document.getElementById("sendBtn");
 
-/* =========================================================
-   LANGUAGE
-========================================================= */
+const micBtn =
+  document.getElementById("micBtn");
 
-const UI = {
+const clearBtn =
+  document.getElementById("clearBtn");
 
-  fa: {
-    title: "سلام! من AfghanAI هستم",
-    text: "دستیار هوش مصنوعی شخصی شما برای برنامه‌نویسی، GitHub، پروژه‌ها و سوالات روزمره.",
-    placeholder: "پیام خود را بنویسید...",
-    status: "AfghanAI آماده است"
-  },
+const language =
+  document.getElementById("language");
 
-  en: {
-    title: "Hello! I am AfghanAI",
-    text: "Your personal AI assistant for programming, GitHub, projects and everyday questions.",
-    placeholder: "Write your message...",
-    status: "AfghanAI is ready"
-  },
+const webToggle =
+  document.getElementById("webToggle");
 
-  fr: {
-    title: "Bonjour ! Je suis AfghanAI",
-    text: "Votre assistant IA personnel pour la programmation, GitHub, vos projets et les questions quotidiennes.",
-    placeholder: "Écrivez votre message...",
-    status: "AfghanAI est prêt"
-  },
+const status =
+  document.getElementById("status");
 
-  ar: {
-    title: "مرحباً! أنا AfghanAI",
-    text: "مساعدك الذكي للبرمجة وGitHub والمشاريع والأسئلة اليومية.",
-    placeholder: "اكتب رسالتك...",
-    status: "AfghanAI جاهز"
-  },
+const welcome =
+  document.getElementById("welcome");
 
-  de: {
-    title: "Hallo! Ich bin AfghanAI",
-    text: "Ihr persönlicher KI-Assistent für Programmierung, GitHub, Projekte und alltägliche Fragen.",
-    placeholder: "Nachricht schreiben...",
-    status: "AfghanAI ist bereit"
-  }
-};
+language.value =
+  selectedLanguage;
 
-function getUILanguage() {
-  if (selectedLanguage !== "auto") {
+/* =========================
+LANGUAGE
+========================= */
+
+function getLanguage(){
+
+  if(selectedLanguage !== "auto"){
     return selectedLanguage;
   }
 
-  const browser = navigator.language?.slice(0,2);
+  const browser =
+    navigator.language?.slice(0,2);
 
-  return UI[browser] ? browser : "fa";
+  return browser || "fa";
 }
 
-function applyLanguage() {
+function applyLanguage(){
 
-  const lang = getUILanguage();
-  const data = UI[lang] || UI.fa;
+  const lang =
+    getLanguage();
 
-  document.documentElement.lang = lang;
+  const rtl =
+    ["fa","ar"].includes(lang);
 
-  const rtlLanguages = ["fa", "ar"];
+  document.documentElement.lang =
+    lang;
 
   document.documentElement.dir =
-    rtlLanguages.includes(lang) ? "rtl" : "ltr";
+    rtl ? "rtl" : "ltr";
 
-  document.getElementById("welcomeTitle").textContent =
-    data.title;
-
-  document.getElementById("welcomeText").textContent =
-    data.text;
-
-  input.placeholder =
-    data.placeholder;
-
-  statusEl.textContent =
-    data.status;
 }
 
 applyLanguage();
 
-/* =========================================================
-   LOAD HISTORY
-========================================================= */
+/* =========================
+LOAD HISTORY
+========================= */
 
-function loadHistory() {
+function loadHistory(){
 
-  try {
+  try{
 
     const saved =
       localStorage.getItem(HISTORY_KEY);
 
-    if (!saved) return;
+    if(!saved) return;
 
-    const parsed = JSON.parse(saved);
+    const data =
+      JSON.parse(saved);
 
-    if (!Array.isArray(parsed)) return;
+    if(!Array.isArray(data)) return;
 
-    messages = parsed;
+    messages = data;
 
-    messages.forEach(message => {
+    messages.forEach(m => {
 
-      addMessageToUI(
-        message.role,
-        message.content,
-        false
+      addMessage(
+        m.role,
+        m.content,
+        false,
+        m.webResults || []
       );
 
     });
 
-    if (messages.length > 0) {
-      welcome.style.display = "none";
+    if(messages.length){
+      welcome.style.display =
+        "none";
     }
 
-  } catch (error) {
+  }catch(error){
 
-    console.error("History error:", error);
+    console.error(error);
 
   }
-
 }
 
 loadHistory();
 
-/* =========================================================
-   SAVE HISTORY
-========================================================= */
+/* =========================
+SAVE
+========================= */
 
-function saveHistory() {
+function saveHistory(){
 
-  try {
-
-    localStorage.setItem(
-      HISTORY_KEY,
-      JSON.stringify(messages.slice(-100))
-    );
-
-  } catch (error) {
-
-    console.error("Save history error:", error);
-
-  }
+  localStorage.setItem(
+    HISTORY_KEY,
+    JSON.stringify(
+      messages.slice(-100)
+    )
+  );
 
 }
 
-/* =========================================================
-   MESSAGE UI
-========================================================= */
+/* =========================
+ESCAPE
+========================= */
 
-function escapeHTML(text) {
+function escapeHTML(text){
 
-  const div = document.createElement("div");
+  const div =
+    document.createElement("div");
 
-  div.textContent = text;
+  div.textContent =
+    text;
 
   return div.innerHTML;
 
 }
 
-function addMessageToUI(
+/* =========================
+ADD MESSAGE
+========================= */
+
+function addMessage(
   role,
   content,
-  scroll = true
-) {
+  scroll=true,
+  webResults=[]
+){
 
-  const message = document.createElement("div");
+  const message =
+    document.createElement("div");
 
   message.className =
     "message " + role;
@@ -687,43 +715,100 @@ function addMessageToUI(
   const wrap =
     document.createElement("div");
 
-  wrap.className = "bubble-wrap";
+  wrap.className =
+    "wrap";
 
   const bubble =
     document.createElement("div");
 
-  bubble.className = "bubble";
+  bubble.className =
+    "bubble";
 
   bubble.innerHTML =
     escapeHTML(content);
 
   wrap.appendChild(bubble);
 
-  if (role === "assistant") {
+  if(
+    role === "assistant" &&
+    webResults.length
+  ){
+
+    const web =
+      document.createElement("div");
+
+    web.className =
+      "web-results";
+
+    web.innerHTML =
+      `<div class="web-title">
+        🌐 منابع اینترنتی
+      </div>`;
+
+    webResults
+      .slice(0,5)
+      .forEach(result => {
+
+        const item =
+          document.createElement("div");
+
+        item.className =
+          "web-item";
+
+        item.innerHTML = `
+          <a href="${escapeHTML(result.url)}"
+             target="_blank"
+             rel="noopener noreferrer">
+             ${escapeHTML(result.title)}
+          </a>
+          <p>
+             ${escapeHTML(result.snippet || "")}
+          </p>
+        `;
+
+        web.appendChild(item);
+
+      });
+
+    wrap.appendChild(web);
+
+  }
+
+  if(role === "assistant"){
 
     const actions =
       document.createElement("div");
 
     actions.className =
-      "message-actions";
+      "actions-row";
 
-    const speak =
+    const copy =
       document.createElement("button");
 
-    speak.className = "small-btn";
+    copy.className =
+      "small";
 
-    speak.textContent = "🔊 پخش صدا";
+    copy.textContent =
+      "📋 کپی";
 
-    speak.onclick = () => {
+    copy.onclick =
+      async () => {
 
-      speakText(
-        content,
-        speak
-      );
+        await navigator.clipboard.writeText(
+          content
+        );
 
-    };
+        copy.textContent =
+          "✅ کپی شد";
 
-    actions.appendChild(speak);
+        setTimeout(
+          () => copy.textContent = "📋 کپی",
+          1500
+        );
+
+      };
+
+    actions.appendChild(copy);
 
     wrap.appendChild(actions);
 
@@ -733,46 +818,30 @@ function addMessageToUI(
 
   chat.appendChild(message);
 
-  if (scroll) {
-    scrollToBottom();
-  }
-
-  return message;
-
-}
-
-/* =========================================================
-   SCROLL
-========================================================= */
-
-function scrollToBottom() {
-
-  requestAnimationFrame(() => {
-
+  if(scroll){
     chat.scrollTop =
       chat.scrollHeight;
-
-  });
+  }
 
 }
 
-/* =========================================================
-   TYPING
-========================================================= */
+/* =========================
+TYPING
+========================= */
 
-function showTyping() {
+function showTyping(){
 
-  const message =
+  const el =
     document.createElement("div");
 
-  message.className =
+  el.id =
+    "typing";
+
+  el.className =
     "message assistant";
 
-  message.id =
-    "typingMessage";
-
-  message.innerHTML = `
-    <div class="bubble-wrap">
+  el.innerHTML = `
+    <div class="wrap">
       <div class="typing">
         <span></span>
         <span></span>
@@ -781,88 +850,179 @@ function showTyping() {
     </div>
   `;
 
-  chat.appendChild(message);
+  chat.appendChild(el);
 
-  scrollToBottom();
+  chat.scrollTop =
+    chat.scrollHeight;
 
 }
 
-function hideTyping() {
+function hideTyping(){
 
   document
-    .getElementById("typingMessage")
+    .getElementById("typing")
     ?.remove();
 
 }
 
-/* =========================================================
-   SEND MESSAGE
-========================================================= */
+/* =========================
+WEB SEARCH
+========================= */
 
-async function sendMessage(text = null) {
+async function searchWeb(query){
 
-  const value =
+  try{
+
+    const response =
+      await fetch(
+        "/api/search?q=" +
+        encodeURIComponent(query)
+      );
+
+    const data =
+      await response.json();
+
+    if(
+      !response.ok ||
+      !data.success
+    ){
+
+      console.warn(
+        "Search error:",
+        data.error
+      );
+
+      return [];
+
+    }
+
+    return Array.isArray(data.results)
+      ? data.results
+      : [];
+
+  }catch(error){
+
+    console.error(
+      "Web search error:",
+      error
+    );
+
+    return [];
+
+  }
+
+}
+
+/* =========================
+SEND
+========================= */
+
+async function sendMessage(
+  forcedText=null
+){
+
+  const text =
     String(
-      text !== null
-        ? text
+      forcedText !== null
+        ? forcedText
         : input.value
     ).trim();
 
-  if (!value) return;
+  if(!text) return;
 
   input.value = "";
+  input.style.height =
+    "auto";
 
-  input.style.height = "auto";
+  welcome.style.display =
+    "none";
 
-  welcome.style.display = "none";
+  let webResults = [];
+
+  if(webSearchEnabled){
+
+    status.textContent =
+      "🌐 در حال جستجوی اینترنت...";
+
+    webResults =
+      await searchWeb(text);
+
+  }
 
   messages.push({
-    role: "user",
-    content: value
+
+    role:"user",
+
+    content:text,
+
+    webResults:webResults
+
   });
 
-  addMessageToUI(
+  addMessage(
     "user",
-    value
+    text
   );
 
   saveHistory();
 
   showTyping();
 
-  sendBtn.disabled = true;
+  sendBtn.disabled =
+    true;
 
-  statusEl.textContent =
-    "در حال فکر کردن...";
+  try{
 
-  try {
+    let webContext = "";
+
+    if(webResults.length){
+
+      webContext =
+        webResults
+          .map(
+            (r,i) =>
+              `[${i+1}] ${r.title}\n` +
+              `URL: ${r.url}\n` +
+              `متن: ${r.snippet}`
+          )
+          .join("\n\n");
+
+    }
 
     const response =
-      await fetch("/api/chat", {
+      await fetch(
+        "/api/chat",
+        {
 
-        method: "POST",
+          method:"POST",
 
-        headers: {
-          "Content-Type":
-            "application/json"
-        },
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
 
-        body: JSON.stringify({
+          body:JSON.stringify({
 
-          messages:
-            messages.slice(-20),
+            messages:
+              messages.slice(-20),
 
-          language:
-            selectedLanguage
+            language:
+              selectedLanguage,
 
-        })
+            webContext
 
-      });
+          })
+
+        }
+      );
 
     const data =
       await response.json();
 
-    if (!response.ok || !data.success) {
+    if(
+      !response.ok ||
+      !data.success
+    ){
 
       throw new Error(
         data.error ||
@@ -874,7 +1034,7 @@ async function sendMessage(text = null) {
     const reply =
       String(data.reply || "").trim();
 
-    if (!reply) {
+    if(!reply){
 
       throw new Error(
         "پاسخ خالی دریافت شد"
@@ -883,48 +1043,51 @@ async function sendMessage(text = null) {
     }
 
     messages.push({
-      role: "assistant",
-      content: reply
+
+      role:"assistant",
+
+      content:reply,
+
+      webResults
+
     });
 
-    addMessageToUI(
+    addMessage(
       "assistant",
-      reply
+      reply,
+      true,
+      webResults
     );
 
     saveHistory();
 
-    statusEl.textContent =
-      "AfghanAI آماده است";
+    status.textContent =
+      webResults.length
+        ? "🌐 پاسخ بر اساس جستجوی اینترنتی"
+        : "AfghanAI آماده است";
 
-    /*
-      صدای خودکار پاسخ
-    */
-
-    await speakText(reply);
-
-  } catch (error) {
+  }catch(error){
 
     console.error(error);
 
-    const errorText =
-      "❌ " +
-      (error.message ||
-      "خطا در ارتباط با سرور");
-
-    addMessageToUI(
+    addMessage(
       "assistant",
-      errorText
+      "❌ " +
+      (
+        error.message ||
+        "خطا در ارتباط با سرور"
+      )
     );
 
-    statusEl.textContent =
+    status.textContent =
       "خطا";
 
-  } finally {
+  }finally{
 
     hideTyping();
 
-    sendBtn.disabled = false;
+    sendBtn.disabled =
+      false;
 
     input.focus();
 
@@ -932,222 +1095,25 @@ async function sendMessage(text = null) {
 
 }
 
-/* =========================================================
-   GEMINI SERVER TTS
-========================================================= */
-
-async function speakText(
-  text,
-  button = null
-) {
-
-  cleanupAudio();
-
-  if (!text) return;
-
-  try {
-
-    statusEl.textContent =
-      "🔊 در حال ساخت صدا...";
-
-    if (button) {
-
-      currentSpeakingButton =
-        button;
-
-      button.textContent =
-        "⏳ در حال آماده‌سازی...";
-
-    }
-
-    const response =
-      await fetch("/api/tts", {
-
-        method: "POST",
-
-        headers: {
-          "Content-Type":
-            "application/json"
-        },
-
-        body: JSON.stringify({
-
-          text: String(text)
-            .slice(0, 5000),
-
-          language:
-            selectedLanguage
-
-        })
-
-      });
-
-    if (!response.ok) {
-
-      let errorMessage =
-        "خطا در سرویس صدا";
-
-      try {
-
-        const data =
-          await response.json();
-
-        if (data.error) {
-          errorMessage =
-            data.error;
-        }
-
-      } catch (_) {}
-
-      throw new Error(
-        errorMessage
-      );
-
-    }
-
-    const blob =
-      await response.blob();
-
-    const url =
-      URL.createObjectURL(blob);
-
-    const audio =
-      new Audio(url);
-
-    currentAudio =
-      audio;
-
-    if (button) {
-      button.textContent =
-        "⏹️ توقف";
-    }
-
-    audio.onended = () => {
-
-      URL.revokeObjectURL(url);
-
-      if (currentSpeakingButton) {
-
-        currentSpeakingButton
-          .textContent =
-          "🔊 پخش صدا";
-
-      }
-
-      currentSpeakingButton =
-        null;
-
-      currentAudio =
-        null;
-
-      statusEl.textContent =
-        "AfghanAI آماده است";
-
-    };
-
-    audio.onerror = () => {
-
-      URL.revokeObjectURL(url);
-
-      statusEl.textContent =
-        "خطا در پخش صدا";
-
-      if (button) {
-        button.textContent =
-          "🔊 پخش صدا";
-      }
-
-      currentSpeakingButton =
-        null;
-
-      currentAudio =
-        null;
-
-    };
-
-    await audio.play();
-
-    statusEl.textContent =
-      "🔊 در حال پخش پاسخ...";
-
-  } catch (error) {
-
-    console.error(
-      "TTS ERROR:",
-      error
-    );
-
-    if (button) {
-
-      button.textContent =
-        "🔊 پخش صدا";
-
-    }
-
-    currentSpeakingButton =
-      null;
-
-    statusEl.textContent =
-      "صدا فعال نشد";
-
-    /*
-      اگر ساخت صدا موفق نشد،
-      متن همچنان نمایش داده می‌شود.
-    */
-
-  }
-
-}
-
-/* =========================================================
-   STOP AUDIO
-========================================================= */
-
-function cleanupAudio() {
-
-  if (currentAudio) {
-
-    try {
-      currentAudio.pause();
-    } catch (_) {}
-
-    currentAudio = null;
-
-  }
-
-  if (currentSpeakingButton) {
-
-    currentSpeakingButton.textContent =
-      "🔊 پخش صدا";
-
-    currentSpeakingButton =
-      null;
-
-  }
-
-}
-
-/* =========================================================
-   SEND BUTTON
-========================================================= */
-
-sendBtn.addEventListener(
-  "click",
-  () => sendMessage()
-);
-
-/* =========================================================
-   ENTER
-========================================================= */
+/* =========================
+SEND BUTTON
+========================= */
+
+sendBtn.onclick =
+  () => sendMessage();
+
+/* =========================
+ENTER
+========================= */
 
 input.addEventListener(
   "keydown",
   event => {
 
-    if (
+    if(
       event.key === "Enter" &&
       !event.shiftKey
-    ) {
+    ){
 
       event.preventDefault();
 
@@ -1158,9 +1124,9 @@ input.addEventListener(
   }
 );
 
-/* =========================================================
-   AUTO RESIZE
-========================================================= */
+/* =========================
+AUTO RESIZE
+========================= */
 
 input.addEventListener(
   "input",
@@ -1178,43 +1144,40 @@ input.addEventListener(
   }
 );
 
-/* =========================================================
-   SUGGESTIONS
-========================================================= */
+/* =========================
+WEB TOGGLE
+========================= */
 
-document
-  .querySelectorAll(".suggestion")
-  .forEach(button => {
-
-    button.addEventListener(
-      "click",
-      () => {
-
-        sendMessage(
-          button.dataset.text
-        );
-
-      }
-    );
-
-  });
-
-/* =========================================================
-   CLEAR
-========================================================= */
-
-clearBtn.addEventListener(
-  "click",
+webToggle.onclick =
   () => {
 
-    const ok =
-      confirm(
-        "آیا تمام تاریخچه چت پاک شود؟"
-      );
+    webSearchEnabled =
+      !webSearchEnabled;
 
-    if (!ok) return;
+    webToggle.classList.toggle(
+      "active",
+      webSearchEnabled
+    );
 
-    cleanupAudio();
+    webToggle.textContent =
+      webSearchEnabled
+        ? "🌐 جستجوی اینترنت"
+        : "🔴 جستجو خاموش";
+
+  };
+
+/* =========================
+CLEAR
+========================= */
+
+clearBtn.onclick =
+  () => {
+
+    if(
+      !confirm(
+        "تمام تاریخچه پاک شود؟"
+      )
+    ) return;
 
     messages = [];
 
@@ -1231,22 +1194,20 @@ clearBtn.addEventListener(
     welcome.style.display =
       "block";
 
-    statusEl.textContent =
+    status.textContent =
       "AfghanAI آماده است";
 
-  }
-);
+  };
 
-/* =========================================================
-   LANGUAGE CHANGE
-========================================================= */
+/* =========================
+LANGUAGE
+========================= */
 
-languageSelect.addEventListener(
-  "change",
+language.onchange =
   () => {
 
     selectedLanguage =
-      languageSelect.value;
+      language.value;
 
     localStorage.setItem(
       LANGUAGE_KEY,
@@ -1255,30 +1216,83 @@ languageSelect.addEventListener(
 
     applyLanguage();
 
+  };
+
+/* =========================
+SUGGESTIONS
+========================= */
+
+document
+  .querySelectorAll(".suggestion")
+  .forEach(button => {
+
+    button.onclick =
+      () => {
+
+        sendMessage(
+          button.dataset.text
+        );
+
+      };
+
+  });
+
+/* =========================
+MIC
+========================= */
+
+function getVoiceLanguage(){
+
+  const map = {
+
+    fa:"fa-AF",
+    en:"en-US",
+    fr:"fr-FR",
+    ar:"ar-SA",
+    de:"de-DE",
+    tr:"tr-TR",
+    ru:"ru-RU",
+    es:"es-ES",
+    zh:"zh-CN",
+    ja:"ja-JP",
+    ko:"ko-KR",
+    hi:"hi-IN"
+
+  };
+
+  if(
+    selectedLanguage !== "auto" &&
+    map[selectedLanguage]
+  ){
+
+    return map[selectedLanguage];
+
   }
-);
 
-/* =========================================================
-   MICROPHONE
-========================================================= */
+  return navigator.language ||
+    "fa-AF";
 
-function setupSpeechRecognition() {
+}
 
-  const SpeechRecognition =
+function setupMic(){
+
+  const SR =
     window.SpeechRecognition ||
     window.webkitSpeechRecognition;
 
-  if (!SpeechRecognition) {
+  if(!SR){
 
-    micBtn.title =
-      "مرورگر شما از تشخیص صدا پشتیبانی نمی‌کند";
+    micBtn.onclick =
+      () => alert(
+        "مرورگر شما از تشخیص صدا پشتیبانی نمی‌کند."
+      );
 
     return;
 
   }
 
   recognition =
-    new SpeechRecognition();
+    new SR();
 
   recognition.continuous =
     false;
@@ -1289,30 +1303,29 @@ function setupSpeechRecognition() {
   recognition.maxAlternatives =
     1;
 
-  recognition.lang =
-    getVoiceLanguage();
+  recognition.onstart =
+    () => {
 
-  recognition.onstart = () => {
+      isRecording = true;
 
-    isRecording = true;
+      micBtn.classList.add(
+        "recording"
+      );
 
-    micBtn.classList.add(
-      "recording"
-    );
+      micBtn.textContent =
+        "⏹️";
 
-    micBtn.textContent =
-      "⏹️";
+      status.textContent =
+        "🎙️ در حال شنیدن...";
 
-    statusEl.textContent =
-      "🎙️ در حال شنیدن...";
-
-  };
+    };
 
   recognition.onresult =
     event => {
 
       const transcript =
-        event.results[0][0].transcript;
+        event.results[0][0]
+          .transcript;
 
       input.value =
         transcript;
@@ -1321,137 +1334,65 @@ function setupSpeechRecognition() {
         new Event("input")
       );
 
-      statusEl.textContent =
-        "متن دریافت شد";
-
     };
 
   recognition.onerror =
-    event => {
+    error => {
 
       console.error(
-        "Speech recognition:",
-        event.error
+        "Mic error:",
+        error
       );
 
-      statusEl.textContent =
+      status.textContent =
         "خطا در میکروفون";
 
     };
 
-  recognition.onend = () => {
+  recognition.onend =
+    () => {
 
-    isRecording = false;
+      isRecording =
+        false;
 
-    micBtn.classList.remove(
-      "recording"
-    );
-
-    micBtn.textContent =
-      "🎙️";
-
-  };
-
-}
-
-function getVoiceLanguage() {
-
-  const map = {
-
-    fa: "fa-AF",
-
-    en: "en-US",
-
-    fr: "fr-FR",
-
-    ar: "ar-SA",
-
-    de: "de-DE",
-
-    tr: "tr-TR",
-
-    ru: "ru-RU",
-
-    es: "es-ES",
-
-    zh: "zh-CN",
-
-    ja: "ja-JP",
-
-    ko: "ko-KR",
-
-    hi: "hi-IN"
-
-  };
-
-  if (
-    selectedLanguage !== "auto" &&
-    map[selectedLanguage]
-  ) {
-
-    return map[selectedLanguage];
-
-  }
-
-  const browser =
-    navigator.language ||
-    "fa-AF";
-
-  return browser;
-
-}
-
-micBtn.addEventListener(
-  "click",
-  () => {
-
-    if (!recognition) {
-
-      setupSpeechRecognition();
-
-    }
-
-    if (!recognition) {
-
-      alert(
-        "مرورگر شما از میکروفون پشتیبانی نمی‌کند."
+      micBtn.classList.remove(
+        "recording"
       );
 
-      return;
+      micBtn.textContent =
+        "🎙️";
 
-    }
+    };
 
-    recognition.lang =
-      getVoiceLanguage();
+  micBtn.onclick =
+    () => {
 
-    if (isRecording) {
+      recognition.lang =
+        getVoiceLanguage();
 
-      recognition.stop();
+      if(isRecording){
 
-    } else {
+        recognition.stop();
 
-      try {
+      }else{
 
-        recognition.start();
+        try{
 
-      } catch (error) {
+          recognition.start();
 
-        console.error(error);
+        }catch(error){
+
+          console.error(error);
+
+        }
 
       }
 
-    }
+    };
 
-  }
-);
+}
 
-setupSpeechRecognition();
-
-/* =========================================================
-   INITIAL FOCUS
-========================================================= */
-
-input.focus();
+setupMic();
 
 </script>
 
